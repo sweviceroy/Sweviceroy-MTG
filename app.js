@@ -1,12 +1,12 @@
 // =========================================================
 // SweViceroy MTG - App Navigation
-// MVP version: basic screen switching
+// MVP version: basic screen switching + tutorial slideshow
 // =========================================================
 
 
 // ---------------------------------------------------------
 // App state
-// Vi håller reda på vilken app-screen som visas just nu
+// Håller koll på vilken screen som visas just nu
 // ---------------------------------------------------------
 const appState = {
     currentScreen: "welcome"
@@ -14,8 +14,25 @@ const appState = {
 
 
 // ---------------------------------------------------------
+// Tutorial state
+// Separat state för tutorial-bilderna
+// ---------------------------------------------------------
+const tutorialState = {
+    currentIndex: 0,
+    images: [
+        "img/tutorial-1.png",
+        "img/tutorial-2.png",
+        "img/tutorial-3.png",
+        "img/tutorial-4.png",
+        "img/tutorial-5.png",
+        "img/tutorial-6.png"
+    ]
+};
+
+
+// ---------------------------------------------------------
 // Screen references
-// Samlar alla screens på ett ställe så det blir lättare sen
+// Samlar alla screens på ett ställe
 // ---------------------------------------------------------
 const screens = {
     welcome: document.getElementById("welcome-screen"),
@@ -28,10 +45,20 @@ const screens = {
 
 
 // ---------------------------------------------------------
-// Button references
-// Just nu har vi bara welcome-knapparna kopplade
+// Welcome button references
 // ---------------------------------------------------------
 const startBtn = document.getElementById("start-btn");
+
+
+// ---------------------------------------------------------
+// Tutorial element references
+// ---------------------------------------------------------
+const tutorialImage = document.getElementById("tutorial-image");
+const tutorialCounter = document.getElementById("tutorial-counter");
+const tutorialPrevBtn = document.getElementById("tutorial-prev-btn");
+const tutorialNextBtn = document.getElementById("tutorial-next-btn");
+const tutorialLoginBtn = document.getElementById("tutorial-login-btn");
+
 
 // ---------------------------------------------------------
 // showScreen
@@ -41,23 +68,19 @@ const startBtn = document.getElementById("start-btn");
 // 3. uppdatera appState
 // ---------------------------------------------------------
 function showScreen(screenName) {
-    // Safety check så vi inte försöker visa nåt som inte finns
     if (!screens[screenName]) {
         console.warn(`Screen "${screenName}" does not exist.`);
         return;
     }
 
-    // Göm alla screens
     for (const key in screens) {
         screens[key].classList.remove("active-screen");
         screens[key].classList.add("hidden");
     }
 
-    // Visa vald screen
     screens[screenName].classList.remove("hidden");
     screens[screenName].classList.add("active-screen");
 
-    // Spara current app screen
     appState.currentScreen = screenName;
 
     console.log(`Current screen: ${appState.currentScreen}`);
@@ -65,18 +88,83 @@ function showScreen(screenName) {
 
 
 // ---------------------------------------------------------
-// Event listeners
-// Just nu skickar båda knapparna vidare till tutorial-screen
-// enligt din plan / flowchart
+// updateTutorialScreen
+// Visar rätt tutorialbild + counter
+// och disable:ar prev/next vid kanterna
+// ---------------------------------------------------------
+function updateTutorialScreen() {
+    const currentImagePath = tutorialState.images[tutorialState.currentIndex];
+
+    tutorialImage.src = currentImagePath;
+    tutorialCounter.textContent = `Step ${tutorialState.currentIndex + 1} / ${tutorialState.images.length}`;
+
+    tutorialPrevBtn.disabled = tutorialState.currentIndex === 0;
+    tutorialNextBtn.disabled = tutorialState.currentIndex === tutorialState.images.length - 1;
+}
+
+
+// ---------------------------------------------------------
+// goToNextTutorialImage
+// Flyttar ett steg fram om möjligt
+// ---------------------------------------------------------
+function goToNextTutorialImage() {
+    if (tutorialState.currentIndex < tutorialState.images.length - 1) {
+        tutorialState.currentIndex++;
+        updateTutorialScreen();
+    }
+}
+
+
+// ---------------------------------------------------------
+// goToPreviousTutorialImage
+// Flyttar ett steg bak om möjligt
+// ---------------------------------------------------------
+function goToPreviousTutorialImage() {
+    if (tutorialState.currentIndex > 0) {
+        tutorialState.currentIndex--;
+        updateTutorialScreen();
+    }
+}
+
+
+// ---------------------------------------------------------
+// openTutorialScreen
+// Återställer tutorial till första bilden och visar screen
+// ---------------------------------------------------------
+function openTutorialScreen() {
+    tutorialState.currentIndex = 0;
+    updateTutorialScreen();
+    showScreen("tutorial");
+}
+
+
+// ---------------------------------------------------------
+// Event listeners - Welcome
 // ---------------------------------------------------------
 startBtn.addEventListener("click", function () {
-    showScreen("tutorial");
+    openTutorialScreen();
 });
 
+
+// ---------------------------------------------------------
+// Event listeners - Tutorial
+// ---------------------------------------------------------
+tutorialPrevBtn.addEventListener("click", function () {
+    goToPreviousTutorialImage();
+});
+
+tutorialNextBtn.addEventListener("click", function () {
+    goToNextTutorialImage();
+});
+
+tutorialLoginBtn.addEventListener("click", function () {
+    showScreen("login");
+});
 
 
 // ---------------------------------------------------------
 // Init
-// Säkerställer att rätt första screen visas vid sidladdning
+// Startläge när sidan laddas
 // ---------------------------------------------------------
+updateTutorialScreen();
 showScreen("welcome");
