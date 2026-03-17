@@ -12,6 +12,7 @@ body {
     background-color: #0f172a;
     color: #f1f5f9;
     min-height: 100vh;
+    overflow: hidden; /* vi vill hålla hela spelet på en screen */
 }
 
 
@@ -24,7 +25,7 @@ body {
     display: none;
     justify-content: center;
     align-items: center;
-    padding: 2rem;
+    padding: 1rem;
 }
 
 .active-screen {
@@ -56,28 +57,6 @@ p {
 
 
 /* =========================================================
-   WELCOME SCREEN
-========================================================= */
-.game-title {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-    color: #22c55e;
-}
-
-.game-subtitle {
-    font-size: 1.2rem;
-    margin-bottom: 2rem;
-    color: #cbd5e1;
-}
-
-.welcome-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-}
-
-
-/* =========================================================
    BUTTONS
 ========================================================= */
 button {
@@ -105,6 +84,28 @@ button:disabled {
     opacity: 0.5;
     cursor: not-allowed;
     transform: none;
+}
+
+
+/* =========================================================
+   WELCOME SCREEN
+========================================================= */
+.game-title {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: #22c55e;
+}
+
+.game-subtitle {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    color: #cbd5e1;
+}
+
+.welcome-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
 }
 
 
@@ -244,8 +245,513 @@ button:disabled {
 
 
 /* =========================================================
-   RESPONSIVE
+   LOADING SCREEN
 ========================================================= */
+.loading-content {
+    text-align: center;
+}
+
+.loading-title {
+    margin-bottom: 0.5rem;
+    color: #22c55e;
+}
+
+.loading-subtitle {
+    margin-bottom: 2rem;
+    color: #cbd5e1;
+}
+
+.loading-card {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    border: 2px solid #334155;
+    border-radius: 12px;
+    background-color: #1e293b;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+}
+
+.loading-players {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.loading-player-box {
+    padding: 1.25rem;
+    border: 2px solid #334155;
+    border-radius: 10px;
+    background-color: #0f172a;
+}
+
+.loading-player-box h3 {
+    margin-bottom: 0.75rem;
+    color: #22c55e;
+}
+
+.loading-player-box p {
+    margin-bottom: 0.5rem;
+    color: #cbd5e1;
+}
+
+.loading-player-box p:last-child {
+    margin-bottom: 0;
+}
+
+.loading-steps {
+    margin-bottom: 2rem;
+    padding: 1rem;
+    border: 2px solid #334155;
+    border-radius: 10px;
+    background-color: #111827;
+}
+
+#loading-step-text {
+    color: #f1f5f9;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.loading-spinner {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto;
+    border: 6px solid #334155;
+    border-top: 6px solid #22c55e;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+
+/* =========================================================
+   MAIN GAME SCREEN - LAYOUT
+========================================================= */
+#game-screen {
+    align-items: stretch;
+    padding: 0.5rem;
+}
+
+.game-layout {
+    width: 100%;
+    height: calc(100vh - 1rem);
+    display: grid;
+    grid-template-columns: 260px 1fr 280px;
+    gap: 0.75rem;
+}
+
+
+/* =========================================================
+   MAIN GAME - SIDEBARS
+========================================================= */
+.game-sidebar-left,
+.game-sidebar-right {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    min-height: 0;
+}
+
+.game-brand-panel,
+.turn-info-panel,
+.phase-tracker-panel,
+.instruction-panel,
+.preview-panel {
+    background-color: #1e293b;
+    border: 2px solid #334155;
+    border-radius: 12px;
+    padding: 1rem;
+}
+
+.game-brand-title {
+    color: #22c55e;
+    font-size: 1.4rem;
+    margin-bottom: 0.25rem;
+}
+
+.game-brand-subtitle {
+    color: #cbd5e1;
+    font-size: 0.95rem;
+}
+
+.turn-info-panel p {
+    margin-bottom: 0.45rem;
+    color: #cbd5e1;
+    text-align: left;
+}
+
+.turn-info-panel p:last-child {
+    margin-bottom: 0;
+}
+
+.phase-tracker-panel h3,
+.instruction-panel h3,
+.preview-panel h3 {
+    margin-bottom: 0.75rem;
+    color: #22c55e;
+}
+
+.phase-tracker-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.phase-tracker-item {
+    padding: 0.7rem 0.9rem;
+    border-radius: 8px;
+    background-color: #0f172a;
+    border: 2px solid #334155;
+    color: #cbd5e1;
+    font-weight: bold;
+    text-align: left;
+}
+
+.active-phase-item {
+    background-color: #1d4ed8;
+    border-color: #60a5fa;
+    color: #ffffff;
+}
+
+.instruction-panel {
+    flex: 1;
+    min-height: 0;
+    overflow: auto;
+}
+
+#instruction-text {
+    color: #f1f5f9;
+    text-align: left;
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   MAIN GAME - PREVIEW PANEL
+========================================================= */
+.preview-panel {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.preview-card-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 0.75rem;
+    flex: 1;
+    min-height: 0;
+}
+
+.preview-card-image {
+    width: min(100%, 240px);
+    aspect-ratio: 5 / 7;
+    object-fit: cover;
+    border: 2px solid #475569;
+    border-radius: 10px;
+    background-color: #0f172a;
+}
+
+.preview-card-name {
+    color: #f1f5f9;
+    font-weight: bold;
+    text-align: center;
+}
+
+
+/* =========================================================
+   MAIN GAME - BOARD AREA
+========================================================= */
+.game-board {
+    display: grid;
+    grid-template-rows:
+        auto   /* p2 header */
+        auto   /* p2 hand */
+        1fr    /* p2 battlefield */
+        1fr    /* p1 battlefield */
+        auto   /* p1 hand */
+        auto;  /* p1 header */
+    gap: 0.5rem;
+    min-height: 0;
+}
+
+
+/* =========================================================
+   MAIN GAME - PLAYER HEADERS / STATS
+========================================================= */
+.player-header {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 0.5rem;
+}
+
+.player-name-block,
+.player-stats-block {
+    background-color: #1e293b;
+    border: 2px solid #334155;
+    border-radius: 12px;
+    padding: 0.75rem;
+}
+
+.player-name-block {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.player-name-block h3 {
+    color: #22c55e;
+    text-align: center;
+}
+
+.player-stats-block {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.player-stat-box {
+    min-width: 72px;
+    padding: 0.55rem 0.7rem;
+    background-color: #0f172a;
+    border: 2px solid #475569;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.stat-label {
+    display: block;
+    font-size: 0.75rem;
+    color: #94a3b8;
+    margin-bottom: 0.2rem;
+}
+
+.next-phase-btn {
+    margin-left: auto;
+}
+
+
+/* =========================================================
+   MAIN GAME - HAND SECTIONS
+========================================================= */
+.hand-section {
+    background-color: #1e293b;
+    border: 2px solid #334155;
+    border-radius: 12px;
+    padding: 0.5rem;
+}
+
+.zone-label-row {
+    display: grid;
+    grid-template-columns: 1fr 150px;
+    gap: 0.5rem;
+    margin-bottom: 0.35rem;
+    align-items: center;
+}
+
+.zone-label-row h4 {
+    color: #cbd5e1;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.hand-zone-row {
+    display: grid;
+    grid-template-columns: 1fr 150px;
+    gap: 0.5rem;
+    align-items: stretch;
+}
+
+.hand-zone,
+.discard-slot-zone {
+    min-height: 110px;
+    background-color: #0f172a;
+    border: 2px dashed #475569;
+    border-radius: 10px;
+    padding: 0.35rem;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    overflow: hidden;
+}
+
+.hand-zone {
+    justify-content: center;
+    flex-wrap: nowrap;
+}
+
+.discard-slot-zone {
+    justify-content: center;
+}
+
+
+/* =========================================================
+   MAIN GAME - BATTLEFIELD ZONES
+========================================================= */
+.battlefield-side {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    gap: 0.5rem;
+    min-height: 0;
+}
+
+.zone-block {
+    background-color: #1e293b;
+    border: 2px solid #334155;
+    border-radius: 12px;
+    padding: 0.45rem;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.battlefield-zone {
+    flex: 1;
+    min-height: 0;
+    background-color: #0f172a;
+    border: 2px dashed #475569;
+    border-radius: 10px;
+    padding: 0.4rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    overflow: hidden;
+}
+
+.lands-zone,
+.creatures-zone {
+    justify-content: center;
+    flex-wrap: nowrap;
+}
+
+
+/* =========================================================
+   MAIN GAME - GENERIC CARD PLACEHOLDERS
+   5:7 ratio för MTG-style cards
+========================================================= */
+.game-card,
+.preview-card,
+.card-slot-placeholder {
+    width: 64px;
+    aspect-ratio: 5 / 7;
+    border-radius: 8px;
+    overflow: hidden;
+    flex: 0 0 auto;
+    background-color: #1f2937;
+    border: 2px solid #475569;
+}
+
+.game-card img,
+.preview-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.card-slot-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #64748b;
+    font-size: 0.75rem;
+    text-align: center;
+    padding: 0.25rem;
+}
+
+
+/* =========================================================
+   MAIN GAME - FUTURE VISUAL STATES
+   Redo nu så vi är förberedda för app.js
+========================================================= */
+.card-tapped {
+    transform: rotate(90deg);
+}
+
+.card-attacking {
+    transform: translateY(-10px);
+}
+
+.card-selected {
+    outline: 3px solid #facc15;
+}
+
+.card-blocking {
+    outline: 3px solid #60a5fa;
+}
+
+.card-damaged {
+    outline: 3px solid #ef4444;
+}
+
+
+/* =========================================================
+   GAME OVER PLACEHOLDER
+========================================================= */
+#gameover-screen .screen-content {
+    border: 2px dashed #334155;
+    border-radius: 12px;
+    background-color: #1e293b;
+}
+
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   OBS: spelet är i första hand desktop/hotseat
+========================================================= */
+@media (max-width: 1300px) {
+    .game-layout {
+        grid-template-columns: 220px 1fr 240px;
+    }
+
+    .game-card,
+    .preview-card,
+    .card-slot-placeholder {
+        width: 56px;
+    }
+}
+
+@media (max-width: 1100px) {
+    body {
+        overflow: auto;
+    }
+
+    .game-layout {
+        height: auto;
+        min-height: calc(100vh - 1rem);
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto;
+    }
+
+    .game-sidebar-left,
+    .game-sidebar-right {
+        min-height: auto;
+    }
+
+    .preview-panel {
+        height: auto;
+    }
+}
+
 @media (max-width: 850px) {
     .login-panels {
         grid-template-columns: 1fr;
@@ -263,6 +769,19 @@ button:disabled {
 
     .player-side {
         min-height: auto;
+    }
+
+    .loading-players {
+        grid-template-columns: 1fr;
+    }
+
+    .player-header {
+        grid-template-columns: 1fr;
+    }
+
+    .zone-label-row,
+    .hand-zone-row {
+        grid-template-columns: 1fr;
     }
 }
 
@@ -287,5 +806,18 @@ button:disabled {
     .tutorial-buttons,
     .login-bottom-actions {
         flex-direction: column;
+    }
+
+    .loading-card {
+        padding: 1.25rem;
+    }
+
+    .player-stats-block {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .next-phase-btn {
+        margin-left: 0;
     }
 }
