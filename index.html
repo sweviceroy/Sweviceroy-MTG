@@ -160,9 +160,31 @@
              LOADING SCREEN
         ========================================================== -->
         <section id="loading-screen" class="screen hidden">
-            <div class="screen-content">
-                <h2>Loading Screen</h2>
-                <p>Preparing game...</p>
+            <div class="screen-content loading-content">
+                <h2 class="loading-title">Preparing Match</h2>
+                <p class="loading-subtitle">Setting up decks, hands, and turn order...</p>
+
+                <div class="loading-card">
+                    <div class="loading-players">
+                        <div class="loading-player-box">
+                            <h3>Player 1</h3>
+                            <p>Name: <span id="loading-player1-name">Player 1</span></p>
+                            <p>Bet: <span id="loading-player1-bet">0</span></p>
+                        </div>
+
+                        <div class="loading-player-box">
+                            <h3>Player 2</h3>
+                            <p>Name: <span id="loading-player2-name">Player 2</span></p>
+                            <p>Bet: <span id="loading-player2-bet">0</span></p>
+                        </div>
+                    </div>
+
+                    <div class="loading-steps">
+                        <p id="loading-step-text">Shuffling decks...</p>
+                    </div>
+
+                    <div class="loading-spinner" aria-hidden="true"></div>
+                </div>
             </div>
         </section>
 

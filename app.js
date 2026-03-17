@@ -41,6 +41,32 @@ const bettingState = {
 
 
 // ---------------------------------------------------------
+// Player setup state
+// Sparar namn så loading-screen kan visa dem
+// ---------------------------------------------------------
+const playerSetupState = {
+    player1Name: "Player 1",
+    player2Name: "Player 2"
+};
+
+
+// ---------------------------------------------------------
+// Loading state
+// Enkel fake-loading för MVP
+// ---------------------------------------------------------
+const loadingState = {
+    stepIndex: 0,
+    steps: [
+        "Shuffling decks...",
+        "Drawing starting hands...",
+        "Preparing battlefield...",
+        "Rolling for first turn..."
+    ],
+    timeoutIds: []
+};
+
+
+// ---------------------------------------------------------
 // LocalStorage keys
 // ---------------------------------------------------------
 const STORAGE_KEYS = {
@@ -95,6 +121,16 @@ const player2BetAmountInput = document.getElementById("player2-bet-amount");
 
 const loginBackBtn = document.getElementById("login-back-btn");
 const startMatchBtn = document.getElementById("start-match-btn");
+
+
+// ---------------------------------------------------------
+// Loading screen references
+// ---------------------------------------------------------
+const loadingPlayer1Name = document.getElementById("loading-player1-name");
+const loadingPlayer2Name = document.getElementById("loading-player2-name");
+const loadingPlayer1Bet = document.getElementById("loading-player1-bet");
+const loadingPlayer2Bet = document.getElementById("loading-player2-bet");
+const loadingStepText = document.getElementById("loading-step-text");
 
 
 // ---------------------------------------------------------
@@ -255,6 +291,9 @@ function validatePlayerNames() {
         return false;
     }
 
+    playerSetupState.player1Name = player1Name;
+    playerSetupState.player2Name = player2Name;
+
     return true;
 }
 
@@ -288,6 +327,49 @@ function validatePlayerBets() {
     return true;
 }
 
+
+// ---------------------------------------------------------
+// Loading functions
+// ---------------------------------------------------------
+function clearLoadingTimeouts() {
+    for (let i = 0; i < loadingState.timeoutIds.length; i++) {
+        clearTimeout(loadingState.timeoutIds[i]);
+    }
+
+    loadingState.timeoutIds = [];
+}
+
+function updateLoadingScreenInfo() {
+    loadingPlayer1Name.textContent = playerSetupState.player1Name;
+    loadingPlayer2Name.textContent = playerSetupState.player2Name;
+    loadingPlayer1Bet.textContent = bettingState.player1Bet;
+    loadingPlayer2Bet.textContent = bettingState.player2Bet;
+    loadingStepText.textContent = loadingState.steps[loadingState.stepIndex];
+}
+
+function openLoadingScreen() {
+    clearLoadingTimeouts();
+
+    loadingState.stepIndex = 0;
+    updateLoadingScreenInfo();
+    showScreen("loading");
+
+    for (let i = 1; i < loadingState.steps.length; i++) {
+        const timeoutId = setTimeout(function () {
+            loadingState.stepIndex = i;
+            loadingStepText.textContent = loadingState.steps[i];
+        }, i * 700);
+
+        loadingState.timeoutIds.push(timeoutId);
+    }
+
+    const finalTimeoutId = setTimeout(function () {
+        showScreen("game");
+    }, loadingState.steps.length * 700);
+
+    loadingState.timeoutIds.push(finalTimeoutId);
+}
+
 function startMatchSetup() {
     const namesAreValid = validatePlayerNames();
     const betsAreValid = validatePlayerBets();
@@ -296,12 +378,7 @@ function startMatchSetup() {
         return;
     }
 
-    showScreen("loading");
-
-    // Temp loading så vi ser att flowet fungerar
-    setTimeout(function () {
-        showScreen("game");
-    }, 1000);
+    openLoadingScreen();
 }
 
 
