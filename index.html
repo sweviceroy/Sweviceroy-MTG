@@ -192,9 +192,194 @@
              MAIN GAME SCREEN
         ========================================================== -->
         <section id="game-screen" class="screen hidden">
-            <div class="screen-content">
-                <h2>Main Game Screen</h2>
-                <p>Game board will go here...</p>
+            <div class="game-layout">
+
+                <!-- LEFT SIDEBAR -->
+                <aside class="game-sidebar-left">
+                    <div class="game-brand-panel">
+                        <h2 class="game-brand-title">SweViceroy MTG</h2>
+                        <p class="game-brand-subtitle">Hotseat battlefield</p>
+                    </div>
+
+                    <div class="turn-info-panel">
+                        <p><strong>Turn:</strong> <span id="turn-number-display">1</span></p>
+                        <p><strong>Current Player:</strong> <span id="current-player-display">Player 1</span></p>
+                    </div>
+
+                    <div class="phase-tracker-panel">
+                        <h3>Phase Tracker</h3>
+                        <ul class="phase-tracker-list">
+                            <li id="phase-draw-item" class="phase-tracker-item active-phase-item">Draw</li>
+                            <li id="phase-untap-item" class="phase-tracker-item">Untap</li>
+                            <li id="phase-main1-item" class="phase-tracker-item">Main 1</li>
+                            <li id="phase-combat-item" class="phase-tracker-item">Combat</li>
+                            <li id="phase-main2-item" class="phase-tracker-item">Main 2</li>
+                            <li id="phase-end-item" class="phase-tracker-item">End</li>
+                        </ul>
+                    </div>
+
+                    <div class="instruction-panel">
+                        <h3>Instructions</h3>
+                        <p id="instruction-text">
+                            The battlefield awaits. Gameplay instructions will appear here.
+                        </p>
+                    </div>
+                </aside>
+
+                <!-- CENTER GAME BOARD -->
+                <section class="game-board">
+
+                    <!-- PLAYER 2 HEADER / STATS -->
+                    <div class="player-header player2-header">
+                        <div class="player-name-block">
+                            <h3 id="player2-name-display">Player 2</h3>
+                        </div>
+
+                        <div class="player-stats-block">
+                            <div class="player-stat-box">
+                                <span class="stat-label">Deck</span>
+                                <span id="player2-deck-count">40</span>
+                            </div>
+
+                            <div class="player-stat-box">
+                                <span class="stat-label">Life</span>
+                                <span id="player2-life-total">10</span>
+                            </div>
+
+                            <div class="player-stat-box">
+                                <span class="stat-label">Mana</span>
+                                <span id="player2-mana-pool">0</span>
+                            </div>
+
+                            <button id="player2-next-phase-btn" class="next-phase-btn" type="button" disabled>
+                                Next Phase
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- PLAYER 2 HAND -->
+                    <div class="hand-section player2-hand-section">
+                        <div class="zone-label-row">
+                            <h4>Player 2 Hand</h4>
+                            <h4>8th Card / Discard</h4>
+                        </div>
+
+                        <div class="hand-zone-row">
+                            <div id="player2-hand-zone" class="hand-zone">
+                                <!-- player 2 hand cards go here -->
+                            </div>
+
+                            <div id="player2-discard-slot" class="discard-slot-zone">
+                                <!-- player 2 overflow/discard slot -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PLAYER 2 BATTLEFIELD -->
+                    <div class="battlefield-side battlefield-side-top">
+                        <div class="zone-block">
+                            <div class="zone-label-row">
+                                <h4>Player 2 Lands</h4>
+                            </div>
+                            <div id="player2-lands-zone" class="battlefield-zone lands-zone">
+                                <!-- player 2 lands -->
+                            </div>
+                        </div>
+
+                        <div class="zone-block">
+                            <div class="zone-label-row">
+                                <h4>Player 2 Creatures</h4>
+                            </div>
+                            <div id="player2-creatures-zone" class="battlefield-zone creatures-zone">
+                                <!-- player 2 creatures -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PLAYER 1 BATTLEFIELD -->
+                    <div class="battlefield-side battlefield-side-bottom">
+                        <div class="zone-block">
+                            <div class="zone-label-row">
+                                <h4>Player 1 Creatures</h4>
+                            </div>
+                            <div id="player1-creatures-zone" class="battlefield-zone creatures-zone">
+                                <!-- player 1 creatures -->
+                            </div>
+                        </div>
+
+                        <div class="zone-block">
+                            <div class="zone-label-row">
+                                <h4>Player 1 Lands</h4>
+                            </div>
+                            <div id="player1-lands-zone" class="battlefield-zone lands-zone">
+                                <!-- player 1 lands -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PLAYER 1 HAND -->
+                    <div class="hand-section player1-hand-section">
+                        <div class="zone-label-row">
+                            <h4>Player 1 Hand</h4>
+                            <h4>8th Card / Discard</h4>
+                        </div>
+
+                        <div class="hand-zone-row">
+                            <div id="player1-hand-zone" class="hand-zone">
+                                <!-- player 1 hand cards go here -->
+                            </div>
+
+                            <div id="player1-discard-slot" class="discard-slot-zone">
+                                <!-- player 1 overflow/discard slot -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PLAYER 1 HEADER / STATS -->
+                    <div class="player-header player1-header">
+                        <div class="player-name-block">
+                            <h3 id="player1-name-display">Player 1</h3>
+                        </div>
+
+                        <div class="player-stats-block">
+                            <div class="player-stat-box">
+                                <span class="stat-label">Deck</span>
+                                <span id="player1-deck-count">40</span>
+                            </div>
+
+                            <div class="player-stat-box">
+                                <span class="stat-label">Life</span>
+                                <span id="player1-life-total">10</span>
+                            </div>
+
+                            <div class="player-stat-box">
+                                <span class="stat-label">Mana</span>
+                                <span id="player1-mana-pool">0</span>
+                            </div>
+
+                            <button id="player1-next-phase-btn" class="next-phase-btn" type="button">
+                                Next Phase
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- RIGHT SIDEBAR -->
+                <aside class="game-sidebar-right">
+                    <div class="preview-panel">
+                        <h3>Card Preview</h3>
+                        <div class="preview-card-wrapper">
+                            <img
+                                id="preview-card-image"
+                                class="preview-card-image"
+                                src="img/card-back.png"
+                                alt="Card preview"
+                            />
+                        </div>
+                        <p id="preview-card-name" class="preview-card-name">No card selected</p>
+                    </div>
+                </aside>
+
             </div>
         </section>
 
