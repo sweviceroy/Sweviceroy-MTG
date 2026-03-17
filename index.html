@@ -54,18 +54,110 @@
 
         <!-- =========================================================
              LOGIN / BETTING SCREEN
-             Hidden for now, will be built later
         ========================================================== -->
         <section id="login-screen" class="screen hidden">
-            <div class="screen-content">
-                <h2>Login / Betting Screen</h2>
-                <p>Coming soon...</p>
+            <div class="screen-content login-content">
+                <h2 class="login-title">Player Setup & Betting</h2>
+                <p class="login-subtitle">Both players enter their name, fake money, and personal bet.</p>
+
+                <div class="login-panels">
+
+                    <!-- PLAYER 1 SIDE -->
+                    <article class="player-side" id="player1-side">
+                        <h3 class="player-side-title">Player 1</h3>
+
+                        <div class="form-row">
+                            <label for="player1-name">Login player 1:</label>
+                            <input
+                                id="player1-name"
+                                class="text-input"
+                                type="text"
+                                placeholder="textbox"
+                                maxlength="20"
+                            />
+                        </div>
+
+                        <div class="form-row">
+                            <span class="static-label">Player 1 balance:</span>
+                            <output id="player1-balance" class="balance-output">0</output>
+                        </div>
+
+                        <div class="form-row">
+                            <label for="player1-add-money">Add cash:</label>
+                            <input
+                                id="player1-add-money"
+                                class="number-input"
+                                type="text"
+                                inputmode="numeric"
+                                placeholder="textbox"
+                            />
+                        </div>
+
+                        <div class="form-row">
+                            <label for="player1-bet-amount">Bet to win:</label>
+                            <input
+                                id="player1-bet-amount"
+                                class="number-input"
+                                type="text"
+                                inputmode="numeric"
+                                placeholder="textbox"
+                            />
+                        </div>
+                    </article>
+
+                    <!-- PLAYER 2 SIDE -->
+                    <article class="player-side" id="player2-side">
+                        <h3 class="player-side-title">Player 2</h3>
+
+                        <div class="form-row">
+                            <label for="player2-name">Login player 2:</label>
+                            <input
+                                id="player2-name"
+                                class="text-input"
+                                type="text"
+                                placeholder="textbox"
+                                maxlength="20"
+                            />
+                        </div>
+
+                        <div class="form-row">
+                            <span class="static-label">Player 2 balance:</span>
+                            <output id="player2-balance" class="balance-output">0</output>
+                        </div>
+
+                        <div class="form-row">
+                            <label for="player2-add-money">Add cash:</label>
+                            <input
+                                id="player2-add-money"
+                                class="number-input"
+                                type="text"
+                                inputmode="numeric"
+                                placeholder="textbox"
+                            />
+                        </div>
+
+                        <div class="form-row">
+                            <label for="player2-bet-amount">Bet to win:</label>
+                            <input
+                                id="player2-bet-amount"
+                                class="number-input"
+                                type="text"
+                                inputmode="numeric"
+                                placeholder="textbox"
+                            />
+                        </div>
+                    </article>
+                </div>
+
+                <div class="login-bottom-actions">
+                    <button id="login-back-btn" type="button">Back To Tutorial</button>
+                    <button id="start-match-btn" type="button">LET'S START THE GAME</button>
+                </div>
             </div>
         </section>
 
         <!-- =========================================================
              LOADING SCREEN
-             Hidden for now, will be built later
         ========================================================== -->
         <section id="loading-screen" class="screen hidden">
             <div class="screen-content">
@@ -76,7 +168,6 @@
 
         <!-- =========================================================
              MAIN GAME SCREEN
-             Hidden for now, will be built later
         ========================================================== -->
         <section id="game-screen" class="screen hidden">
             <div class="screen-content">
@@ -87,7 +178,6 @@
 
         <!-- =========================================================
              GAME OVER SCREEN
-             Hidden for now, will be built later
         ========================================================== -->
         <section id="gameover-screen" class="screen hidden">
             <div class="screen-content">
