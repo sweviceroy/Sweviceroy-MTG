@@ -9,10 +9,10 @@
 
 body {
     font-family: Arial, Helvetica, sans-serif;
-    background-color: #0f172a;
+    background-color: #4a7330; /* green battlefield background */
     color: #f1f5f9;
     min-height: 100vh;
-    overflow: hidden; /* vi vill hålla hela spelet på en screen */
+    overflow: hidden;
 }
 
 
@@ -52,7 +52,7 @@ h2 {
 }
 
 p {
-    color: #94a3b8;
+    color: #dbe7d2;
 }
 
 
@@ -93,13 +93,13 @@ button:disabled {
 .game-title {
     font-size: 3rem;
     margin-bottom: 1rem;
-    color: #22c55e;
+    color: #d9ffd0;
 }
 
 .game-subtitle {
     font-size: 1.2rem;
     margin-bottom: 2rem;
-    color: #cbd5e1;
+    color: #eef7ea;
 }
 
 .welcome-buttons {
@@ -122,17 +122,17 @@ button:disabled {
 
 .tutorial-counter {
     margin-bottom: 1.5rem;
-    color: #cbd5e1;
+    color: #eef7ea;
 }
 
 .tutorial-image-wrapper {
     width: 100%;
     max-width: 900px;
     margin: 0 auto 1.5rem auto;
-    border: 2px solid #334155;
+    border: 2px solid #dfead7;
     border-radius: 12px;
     overflow: hidden;
-    background-color: #1e293b;
+    background-color: rgba(15, 23, 42, 0.7);
 }
 
 .tutorial-image {
@@ -163,7 +163,7 @@ button:disabled {
 
 .login-subtitle {
     margin-bottom: 2rem;
-    color: #cbd5e1;
+    color: #eef7ea;
 }
 
 .login-panels {
@@ -171,10 +171,10 @@ button:disabled {
     grid-template-columns: 1fr 1fr;
     gap: 0;
     width: 100%;
-    border: 2px solid #334155;
+    border: 2px solid #dfead7;
     border-radius: 12px 12px 0 0;
     overflow: hidden;
-    background-color: #1e293b;
+    background-color: rgba(15, 23, 42, 0.72);
 }
 
 .player-side {
@@ -184,12 +184,12 @@ button:disabled {
 }
 
 .player-side:first-child {
-    border-right: 2px solid #334155;
+    border-right: 2px solid #dfead7;
 }
 
 .player-side-title {
     margin-bottom: 1.5rem;
-    color: #22c55e;
+    color: #bbf7d0;
     text-align: center;
 }
 
@@ -213,9 +213,9 @@ button:disabled {
     width: 100%;
     min-height: 44px;
     padding: 0.75rem 1rem;
-    border: 2px solid #475569;
+    border: 2px solid #dfead7;
     border-radius: 6px;
-    background-color: #0f172a;
+    background-color: rgba(15, 23, 42, 0.85);
     color: #f1f5f9;
     font-size: 1rem;
 }
@@ -223,12 +223,11 @@ button:disabled {
 .balance-output {
     display: flex;
     align-items: center;
-    background-color: #111827;
 }
 
 .text-input::placeholder,
 .number-input::placeholder {
-    color: #94a3b8;
+    color: #b7c8b0;
 }
 
 .login-bottom-actions {
@@ -236,10 +235,10 @@ button:disabled {
     justify-content: center;
     gap: 1rem;
     padding: 1.5rem;
-    border: 2px solid #334155;
+    border: 2px solid #dfead7;
     border-top: none;
     border-radius: 0 0 12px 12px;
-    background-color: #172033;
+    background-color: rgba(15, 23, 42, 0.72);
     flex-wrap: wrap;
 }
 
@@ -253,12 +252,12 @@ button:disabled {
 
 .loading-title {
     margin-bottom: 0.5rem;
-    color: #22c55e;
+    color: #d9ffd0;
 }
 
 .loading-subtitle {
     margin-bottom: 2rem;
-    color: #cbd5e1;
+    color: #eef7ea;
 }
 
 .loading-card {
@@ -266,9 +265,9 @@ button:disabled {
     max-width: 800px;
     margin: 0 auto;
     padding: 2rem;
-    border: 2px solid #334155;
+    border: 2px solid #dfead7;
     border-radius: 12px;
-    background-color: #1e293b;
+    background-color: rgba(15, 23, 42, 0.72);
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
 }
 
@@ -281,19 +280,19 @@ button:disabled {
 
 .loading-player-box {
     padding: 1.25rem;
-    border: 2px solid #334155;
+    border: 2px solid #dfead7;
     border-radius: 10px;
-    background-color: #0f172a;
+    background-color: rgba(15, 23, 42, 0.82);
 }
 
 .loading-player-box h3 {
     margin-bottom: 0.75rem;
-    color: #22c55e;
+    color: #bbf7d0;
 }
 
 .loading-player-box p {
     margin-bottom: 0.5rem;
-    color: #cbd5e1;
+    color: #eef7ea;
 }
 
 .loading-player-box p:last-child {
@@ -303,9 +302,9 @@ button:disabled {
 .loading-steps {
     margin-bottom: 2rem;
     padding: 1rem;
-    border: 2px solid #334155;
+    border: 2px solid #dfead7;
     border-radius: 10px;
-    background-color: #111827;
+    background-color: rgba(15, 23, 42, 0.82);
 }
 
 #loading-step-text {
@@ -318,7 +317,7 @@ button:disabled {
     width: 56px;
     height: 56px;
     margin: 0 auto;
-    border: 6px solid #334155;
+    border: 6px solid #dfead7;
     border-top: 6px solid #22c55e;
     border-radius: 50%;
     animation: spin 1s linear infinite;
@@ -330,15 +329,15 @@ button:disabled {
 ========================================================= */
 #game-screen {
     align-items: stretch;
-    padding: 0.5rem;
+    padding: 0.4rem;
 }
 
 .game-layout {
     width: 100%;
-    height: calc(100vh - 1rem);
+    height: calc(100vh - 0.8rem);
     display: grid;
-    grid-template-columns: 260px 1fr 280px;
-    gap: 0.75rem;
+    grid-template-columns: 100px 1fr 400px; /* 130px 1fr 210px DEFAULT! */
+    gap: 0.6rem;
 }
 
 
@@ -349,7 +348,7 @@ button:disabled {
 .game-sidebar-right {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 0.6rem;
     min-height: 0;
 }
 
@@ -358,27 +357,28 @@ button:disabled {
 .phase-tracker-panel,
 .instruction-panel,
 .preview-panel {
-    background-color: #1e293b;
-    border: 2px solid #334155;
+    background-color: rgba(15, 23, 42, 0.72);
+    border: 2px solid #dfead7;
     border-radius: 12px;
-    padding: 1rem;
+    padding: 0.85rem;
 }
 
 .game-brand-title {
     color: #22c55e;
-    font-size: 1.4rem;
+    font-size: 1rem;
     margin-bottom: 0.25rem;
 }
 
 .game-brand-subtitle {
-    color: #cbd5e1;
-    font-size: 0.95rem;
+    color: #eef7ea;
+    font-size: 0.82rem;
 }
 
 .turn-info-panel p {
     margin-bottom: 0.45rem;
-    color: #cbd5e1;
+    color: #eef7ea;
     text-align: left;
+    font-size: 0.9rem;
 }
 
 .turn-info-panel p:last-child {
@@ -390,34 +390,35 @@ button:disabled {
 .preview-panel h3 {
     margin-bottom: 0.75rem;
     color: #22c55e;
+    font-size: 0.95rem;
 }
 
 .phase-tracker-list {
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.45rem;
 }
 
 .phase-tracker-item {
-    padding: 0.7rem 0.9rem;
+    padding: 0.6rem 0.7rem;
     border-radius: 8px;
-    background-color: #0f172a;
-    border: 2px solid #334155;
-    color: #cbd5e1;
+    background-color: rgba(2, 8, 23, 0.7);
+    border: 2px solid #dfead7;
+    color: #eef7ea;
     font-weight: bold;
     text-align: left;
+    font-size: 0.9rem;
 }
 
 .active-phase-item {
-    background-color: #1d4ed8;
-    border-color: #60a5fa;
+    background-color: #2563eb;
+    border-color: #93c5fd;
     color: #ffffff;
 }
 
 .instruction-panel {
-    flex: 1;
-    min-height: 0;
+    min-height: 180px;
     overflow: auto;
 }
 
@@ -425,6 +426,7 @@ button:disabled {
     color: #f1f5f9;
     text-align: left;
     line-height: 1.5;
+    font-size: 0.95rem;
 }
 
 
@@ -432,7 +434,8 @@ button:disabled {
    MAIN GAME - PREVIEW PANEL
 ========================================================= */
 .preview-panel {
-    height: 100%;
+    flex: 1;
+    min-height: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -448,12 +451,12 @@ button:disabled {
 }
 
 .preview-card-image {
-    width: min(100%, 240px);
+    width: min(100%, 190px);            
     aspect-ratio: 5 / 7;
     object-fit: cover;
-    border: 2px solid #475569;
+    border: 2px solid #dfead7;
     border-radius: 10px;
-    background-color: #0f172a;
+    background-color: rgba(2, 8, 23, 0.7);
 }
 
 .preview-card-name {
@@ -469,13 +472,13 @@ button:disabled {
 .game-board {
     display: grid;
     grid-template-rows:
-        auto   /* p2 header */
-        auto   /* p2 hand */
-        1fr    /* p2 battlefield */
-        1fr    /* p1 battlefield */
-        auto   /* p1 hand */
-        auto;  /* p1 header */
-    gap: 0.5rem;
+        auto
+        auto
+        1fr
+        1fr
+        auto
+        auto;
+    gap: 0.45rem;
     min-height: 0;
 }
 
@@ -485,16 +488,16 @@ button:disabled {
 ========================================================= */
 .player-header {
     display: grid;
-    grid-template-columns: 180px 1fr;
-    gap: 0.5rem;
+    grid-template-columns: 140px 1fr;
+    gap: 0.45rem;
 }
 
 .player-name-block,
 .player-stats-block {
-    background-color: #1e293b;
-    border: 2px solid #334155;
+    background-color: rgba(15, 23, 42, 0.72);
+    border: 2px solid #dfead7;
     border-radius: 12px;
-    padding: 0.75rem;
+    padding: 0.65rem;
 }
 
 .player-name-block {
@@ -506,29 +509,30 @@ button:disabled {
 .player-name-block h3 {
     color: #22c55e;
     text-align: center;
+    font-size: 1rem;
 }
 
 .player-stats-block {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 0.75rem;
+    gap: 0.55rem;
     flex-wrap: wrap;
 }
 
 .player-stat-box {
-    min-width: 72px;
-    padding: 0.55rem 0.7rem;
-    background-color: #0f172a;
-    border: 2px solid #475569;
+    min-width: 62px;
+    padding: 0.45rem 0.55rem;
+    background-color: rgba(2, 8, 23, 0.7);
+    border: 2px solid #dfead7;
     border-radius: 8px;
     text-align: center;
 }
 
 .stat-label {
     display: block;
-    font-size: 0.75rem;
-    color: #94a3b8;
+    font-size: 0.7rem;
+    color: #d7e6d0;
     margin-bottom: 0.2rem;
 }
 
@@ -541,40 +545,40 @@ button:disabled {
    MAIN GAME - HAND SECTIONS
 ========================================================= */
 .hand-section {
-    background-color: #1e293b;
-    border: 2px solid #334155;
+    background-color: rgba(15, 23, 42, 0.72);
+    border: 2px solid #dfead7;
     border-radius: 12px;
-    padding: 0.5rem;
+    padding: 0.45rem;
 }
 
 .zone-label-row {
     display: grid;
-    grid-template-columns: 1fr 150px;
-    gap: 0.5rem;
-    margin-bottom: 0.35rem;
+    grid-template-columns: 1fr 120px;
+    gap: 0.45rem;
+    margin-bottom: 0.3rem;
     align-items: center;
 }
 
 .zone-label-row h4 {
-    color: #cbd5e1;
-    font-size: 0.9rem;
+    color: #eef7ea;
+    font-size: 0.88rem;
     text-align: center;
 }
 
 .hand-zone-row {
     display: grid;
-    grid-template-columns: 1fr 150px;
-    gap: 0.5rem;
+    grid-template-columns: 1fr 120px;
+    gap: 0.45rem;
     align-items: stretch;
 }
 
 .hand-zone,
 .discard-slot-zone {
-    min-height: 110px;
-    background-color: #0f172a;
-    border: 2px dashed #475569;
+    min-height: 116px;
+    background-color: rgba(2, 8, 23, 0.68);
+    border: 2px dashed #bcd2b3;
     border-radius: 10px;
-    padding: 0.35rem;
+    padding: 0.35rem 0.5rem;
     display: flex;
     align-items: center;
     gap: 0.35rem;
@@ -597,15 +601,15 @@ button:disabled {
 .battlefield-side {
     display: grid;
     grid-template-rows: 1fr 1fr;
-    gap: 0.5rem;
+    gap: 0.45rem;
     min-height: 0;
 }
 
 .zone-block {
-    background-color: #1e293b;
-    border: 1px solid #334155;
-    border-radius: 6px;
-    padding: 0.45rem;
+    background-color: rgba(15, 23, 42, 0.72);
+    border: 2px solid #dfead7;
+    border-radius: 12px;
+    padding: 0.4rem;
     min-height: 0;
     display: flex;
     flex-direction: column;
@@ -614,13 +618,13 @@ button:disabled {
 .battlefield-zone {
     flex: 1;
     min-height: 0;
-    background-color: #0f172a;
-    border: 2px dashed #475569;
+    background-color: rgba(2, 8, 23, 0.68);
+    border: 2px dashed #bcd2b3;
     border-radius: 10px;
-    padding: 0.4rem;
+    padding: 0.35rem 0.5rem;
     display: flex;
     align-items: center;
-    gap: 0.4rem;
+    gap: 0.35rem;
     overflow: hidden;
 }
 
@@ -632,19 +636,21 @@ button:disabled {
 
 
 /* =========================================================
-   MAIN GAME - GENERIC CARD PLACEHOLDERS
-   5:7 ratio för MTG-style cards
+   MAIN GAME - CARDS
 ========================================================= */
 .game-card,
 .preview-card,
 .card-slot-placeholder {
-    width: 64px;
+    width: 68px;                 /* much wider so cards are actually visible */
+    min-width: 68px;
+    max-width: 68px;
     aspect-ratio: 5 / 7;
     border-radius: 8px;
     overflow: hidden;
-    flex: 0 0 auto;
-    background-color: #1f2937;
-    border: 2px solid #475569;
+    flex: 0 0 68px;              /* prevent shrink-squish */
+    background-color: rgba(31, 41, 55, 0.9);
+    border: 2px solid #dfead7;
+    padding: 0;
 }
 
 .game-card img,
@@ -659,16 +665,37 @@ button:disabled {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #64748b;
+    color: #d7e6d0;
     font-size: 0.75rem;
     text-align: center;
     padding: 0.25rem;
 }
 
+.hand-zone .game-card {
+    width: 74px;
+    min-width: 74px;
+    max-width: 74px;
+    flex: 0 0 74px;
+}
+
+.discard-slot-zone .game-card {
+    width: 74px;
+    min-width: 74px;
+    max-width: 74px;
+    flex: 0 0 74px;
+}
+
+.lands-zone .game-card,
+.creatures-zone .game-card {
+    width: 68px;
+    min-width: 68px;
+    max-width: 68px;
+    flex: 0 0 68px;
+}
+
 
 /* =========================================================
    MAIN GAME - FUTURE VISUAL STATES
-   Redo nu så vi är förberedda för app.js
 ========================================================= */
 .card-tapped {
     transform: rotate(90deg);
@@ -695,9 +722,9 @@ button:disabled {
    GAME OVER PLACEHOLDER
 ========================================================= */
 #gameover-screen .screen-content {
-    border: 2px dashed #334155;
+    border: 2px dashed #dfead7;
     border-radius: 12px;
-    background-color: #1e293b;
+    background-color: rgba(15, 23, 42, 0.72);
 }
 
 
@@ -716,28 +743,37 @@ button:disabled {
 
 /* =========================================================
    RESPONSIVE
-   OBS: spelet är i första hand desktop/hotseat
 ========================================================= */
-@media (max-width: 1300px) {
+@media (max-width: 1400px) {
     .game-layout {
-        grid-template-columns: 220px 1fr 240px;
+        grid-template-columns: 120px 1fr 190px;
     }
 
-    .game-card,
-    .preview-card,
-    .card-slot-placeholder {
-        width: 56px;
+    .hand-zone .game-card,
+    .discard-slot-zone .game-card {
+        width: 68px;
+        min-width: 68px;
+        max-width: 68px;
+        flex: 0 0 68px;
+    }
+
+    .lands-zone .game-card,
+    .creatures-zone .game-card {
+        width: 62px;
+        min-width: 62px;
+        max-width: 62px;
+        flex: 0 0 62px;
     }
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 1200px) {
     body {
         overflow: auto;
     }
 
     .game-layout {
         height: auto;
-        min-height: calc(100vh - 1rem);
+        min-height: calc(100vh - 0.8rem);
         grid-template-columns: 1fr;
         grid-template-rows: auto auto auto;
     }
@@ -748,7 +784,7 @@ button:disabled {
     }
 
     .preview-panel {
-        height: auto;
+        min-height: 320px;
     }
 }
 
@@ -759,7 +795,7 @@ button:disabled {
 
     .player-side:first-child {
         border-right: none;
-        border-bottom: 2px solid #334155;
+        border-bottom: 2px solid #dfead7;
     }
 
     .form-row {
