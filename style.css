@@ -603,8 +603,8 @@ button:disabled {
 
 .zone-block {
     background-color: #1e293b;
-    border: 2px solid #334155;
-    border-radius: 12px;
+    border: 1px solid #334155;
+    border-radius: 6px;
     padding: 0.45rem;
     min-height: 0;
     display: flex;

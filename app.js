@@ -158,6 +158,8 @@ const gameState = {
     combatDamageTimeoutId: null,
     winnerPlayerId: null,
     loserPlayerId: null,
+    endReason: "",
+    betResolved: false,
     message: "",
 
     players: [
@@ -297,6 +299,8 @@ const player2CreaturesZone = document.getElementById("player2-creatures-zone");
 
 const previewCardImage = document.getElementById("preview-card-image");
 const previewCardName = document.getElementById("preview-card-name");
+
+const gameOverScreenContent = document.querySelector("#gameover-screen .screen-content");
 
 
 // =========================================================
@@ -563,12 +567,10 @@ function createCardInstance(cardDef) {
 function buildDeck() {
     const deck = [];
 
-    // 16 Forest
     for (let i = 0; i < 16; i++) {
         deck.push(createCardInstance(CARD_LIBRARY.forest));
     }
 
-    // 24 creatures (4 copies of each)
     const creatureKeys = [
         "creature1",
         "creature2",
@@ -600,7 +602,7 @@ function shuffleArray(array) {
 
 function drawCard(player) {
     if (player.library.length === 0) {
-        gameOver(player.id, `tried to draw from an empty library`);
+        gameOver(player.id, "tried to draw from an empty library");
         return null;
     }
 
@@ -613,6 +615,10 @@ function drawOpeningHands() {
     for (let drawNumber = 0; drawNumber < 7; drawNumber++) {
         drawCard(gameState.players[0]);
         drawCard(gameState.players[1]);
+
+        if (gameState.winnerPlayerId !== null) {
+            return;
+        }
     }
 }
 
@@ -647,8 +653,7 @@ function untapAllForPlayer(player) {
 
 function removeDeadCreatures(player) {
     player.battlefieldCreatures = player.battlefieldCreatures.filter(creature => {
-        const survives = creature.toughness - creature.damageMarked > 0;
-        return survives;
+        return creature.toughness - creature.damageMarked > 0;
     });
 }
 
@@ -660,18 +665,112 @@ function resetDamageMarks() {
     }
 }
 
+function stopGameTimers() {
+    clearLoadingTimeouts();
+
+    if (gameState.combatDamageTimeoutId) {
+        clearTimeout(gameState.combatDamageTimeoutId);
+        gameState.combatDamageTimeoutId = null;
+    }
+
+    gameState.combatDamageLocked = false;
+}
+
+function renderGameOverScreen() {
+    const winner = getPlayerById(gameState.winnerPlayerId);
+    const loser = getPlayerById(gameState.loserPlayerId);
+
+    if (!gameOverScreenContent || !winner || !loser) {
+        return;
+    }
+
+    gameOverScreenContent.innerHTML = `
+        <h2>Game Over</h2>
+        <p><strong>${winner.name}</strong> wins!</p>
+        <p>${loser.name} lost because ${gameState.endReason}.</p>
+        <p style="margin-top: 1rem;">
+            ${winner.name} new balance: <strong>${winner.id === 1 ? bettingState.player1Balance : bettingState.player2Balance}</strong>
+        </p>
+        <p>
+            ${loser.name} new balance: <strong>${loser.id === 1 ? bettingState.player1Balance : bettingState.player2Balance}</strong>
+        </p>
+        <div style="margin-top: 1.5rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+            <button id="play-again-btn" type="button" disabled>Play Again</button>
+            <button id="back-to-welcome-btn" type="button">Back To Welcome</button>
+        </div>
+    `;
+
+    const playAgainBtn = document.getElementById("play-again-btn");
+    const backToWelcomeBtn = document.getElementById("back-to-welcome-btn");
+
+    playAgainBtn.addEventListener("click", function () {
+        initializeGame();
+        showScreen("game");
+        renderGame();
+    });
+
+    backToWelcomeBtn.addEventListener("click", function () {
+        showScreen("welcome");
+    });
+}
+
+function applyBetResults(winnerPlayerId, loserPlayerId) {
+    if (gameState.betResolved) {
+        return;
+    }
+
+    const loserBetAmount = loserPlayerId === 1
+        ? bettingState.player1Bet
+        : bettingState.player2Bet;
+
+    if (winnerPlayerId === 1) {
+        bettingState.player1Balance += loserBetAmount;
+        bettingState.player2Balance -= loserBetAmount;
+    } else {
+        bettingState.player2Balance += loserBetAmount;
+        bettingState.player1Balance -= loserBetAmount;
+    }
+
+    // Safety så ingen balance går under 0 pga framtida buggar
+    bettingState.player1Balance = Math.max(0, bettingState.player1Balance);
+    bettingState.player2Balance = Math.max(0, bettingState.player2Balance);
+
+    saveBalancesToStorage();
+    updateBalanceDisplay();
+
+    gameState.betResolved = true;
+}
+
 function gameOver(loserPlayerId, reason) {
+    if (gameState.winnerPlayerId !== null) {
+        return;
+    }
+
     const loser = getPlayerById(loserPlayerId);
     const winner = gameState.players.find(player => player.id !== loserPlayerId);
 
+    if (!loser || !winner) {
+        return;
+    }
+
+    stopGameTimers();
+
     gameState.winnerPlayerId = winner.id;
     gameState.loserPlayerId = loser.id;
+    gameState.endReason = reason;
+
+    applyBetResults(winner.id, loser.id);
+
     gameState.message = `${loser.name} lost because ${reason}. ${winner.name} wins!`;
 
-    instructionText.textContent = gameState.message;
-    alert(gameState.message);
+    renderGameOverScreen();
+    showScreen("gameOver");
 }
 
+
+// =========================================================
+// PHASE / TURN ENGINE
+// =========================================================
 function getPhaseLabelForTracker(phase) {
     if (phase === "combatAttack" || phase === "combatBlock" || phase === "combatDamage") {
         return "combat";
@@ -750,10 +849,6 @@ function setPreviewCard(card) {
     gameState.selectedPreviewCardId = card.id;
 }
 
-
-// =========================================================
-// PHASE / TURN ENGINE
-// =========================================================
 function enterPhase(phaseName) {
     if (gameState.winnerPlayerId !== null) {
         return;
@@ -766,6 +861,7 @@ function enterPhase(phaseName) {
         const currentPlayer = getCurrentPlayer();
         gameState.message = `${currentPlayer.name} draws a card.`;
         drawCard(currentPlayer);
+
         if (gameState.winnerPlayerId !== null) {
             return;
         }
@@ -779,30 +875,34 @@ function enterPhase(phaseName) {
 
     if (phaseName === "main1") {
         clearManaPools();
-        gameState.message = `Main 1: play one land, tap lands for mana, or cast a creature.`;
+        gameState.message = "Main 1: play one land, tap lands for mana, or cast a creature.";
     }
 
     if (phaseName === "combatAttack") {
         clearManaPools();
         clearCombatSelections();
-        gameState.message = `Combat: attacker selects attacking creatures.`;
+        gameState.message = "Combat: attacker selects attacking creatures.";
     }
 
     if (phaseName === "combatBlock") {
-        gameState.message = `Combat: defender selects blockers. Both hands are hidden.`;
+        gameState.message = "Combat: defender selects blockers. Both hands are hidden.";
     }
 
     if (phaseName === "combatDamage") {
         resolveCombatDamage();
+
+        if (gameState.winnerPlayerId !== null) {
+            return;
+        }
     }
 
     if (phaseName === "main2") {
-        gameState.message = `Main 2: play spells with remaining options. Mana pool has been reset.`;
+        gameState.message = "Main 2: play spells with remaining options. Mana pool has been reset.";
     }
 
     if (phaseName === "end") {
         clearManaPools();
-        gameState.message = `End phase: if hand size is above 7, discard down to 7 before turn passes.`;
+        gameState.message = "End phase: if hand size is above 7, discard down to 7 before turn passes.";
     }
 
     renderGame();
@@ -814,13 +914,13 @@ function tryAdvancePhase() {
     }
 
     if (gameState.pendingDiscard) {
-        gameState.message = `You must discard down to 7 cards before ending your turn.`;
+        gameState.message = "You must discard down to 7 cards before ending your turn.";
         renderGame();
         return;
     }
 
     if (gameState.combatDamageLocked) {
-        gameState.message = `Combat damage is resolving. Please wait.`;
+        gameState.message = "Combat damage is resolving. Please wait.";
         renderGame();
         return;
     }
@@ -849,9 +949,8 @@ function resolveCombatDamage() {
     const attacker = getCurrentPlayer();
     const defender = getDefendingPlayer();
 
-    let summaryLines = [];
+    const summaryLines = [];
 
-    // Blocked and unblocked attackers
     for (const attackingCreature of attacker.battlefieldCreatures.filter(creature => creature.attacking)) {
         if (attackingCreature.blockedById) {
             const blocker = defender.battlefieldCreatures.find(creature => creature.id === attackingCreature.blockedById);
@@ -861,7 +960,7 @@ function resolveCombatDamage() {
                 blocker.damageMarked += attackingCreature.power;
 
                 summaryLines.push(
-                    `${attackingCreature.name} (${attackingCreature.power}/${attackingCreature.toughness}) and ${blocker.name} (${blocker.power}/${blocker.toughness}) deal damage to each other.`
+                    `${attackingCreature.name} and ${blocker.name} deal damage to each other.`
                 );
             }
         } else {
@@ -874,14 +973,14 @@ function resolveCombatDamage() {
     removeDeadCreatures(defender);
 
     if (defender.life <= 0) {
-        gameOver(defender.id, `their life total reached 0`);
+        gameOver(defender.id, "their life total reached 0");
         return;
     }
 
     gameState.combatDamageLocked = true;
     gameState.message = summaryLines.length > 0
         ? summaryLines.join(" ")
-        : `No combat damage was dealt.`;
+        : "No combat damage was dealt.";
 
     renderGame();
 
@@ -890,11 +989,16 @@ function resolveCombatDamage() {
     }
 
     gameState.combatDamageTimeoutId = setTimeout(function () {
+        if (gameState.winnerPlayerId !== null) {
+            return;
+        }
+
         gameState.combatDamageLocked = false;
+        gameState.combatDamageTimeoutId = null;
         resetDamageMarks();
         gameState.message += " Combat damage finished. Attacker may proceed to Main 2.";
         renderGame();
-    }, 5000);
+    }, 100); // Kort timeout för att ge spelaren chans att se damage-markeringarna innan de försvinner (antal millisekunder kan justeras)
 }
 
 
@@ -902,9 +1006,7 @@ function resolveCombatDamage() {
 // GAME INITIALIZATION
 // =========================================================
 function initializeGame() {
-    if (gameState.combatDamageTimeoutId) {
-        clearTimeout(gameState.combatDamageTimeoutId);
-    }
+    stopGameTimers();
 
     uniqueIdCounter = 1;
 
@@ -917,10 +1019,11 @@ function initializeGame() {
     gameState.selectedBlockerId = null;
     gameState.pendingDiscard = false;
     gameState.combatDamageLocked = false;
-    gameState.combatDamageTimeoutId = null;
     gameState.winnerPlayerId = null;
     gameState.loserPlayerId = null;
-    gameState.message = "Welcome to battle.";
+    gameState.endReason = "";
+    gameState.betResolved = false;
+    gameState.message = "Welcome to the game! Let the battle begin!"; 
 
     gameState.players[0] = {
         id: 1,
@@ -947,8 +1050,9 @@ function initializeGame() {
     drawOpeningHands();
     setPreviewCard(null);
 
-    // Direkt in i draw-phase enligt reglerna
-    enterPhase("draw");
+    if (gameState.winnerPlayerId === null) {
+        enterPhase("draw");
+    }
 }
 
 
@@ -1138,7 +1242,7 @@ function renderBoard() {
 }
 
 function renderGame() {
-    if (!gameState.started) {
+    if (!gameState.started || gameState.winnerPlayerId !== null) {
         return;
     }
 
@@ -1433,14 +1537,12 @@ function handleGameCardClick(cardId, ownerId, zoneName) {
         return;
     }
 
-    // Preview first
     if (zoneName !== "discard" || shouldShowHandFaceUp(owner.id)) {
         if (card.type === "land" || card.type === "creature") {
             setPreviewCard(card);
         }
     }
 
-    // Discard has priority
     if (gameState.pendingDiscard && zoneName === "hand" && isPlayerActive(owner.id)) {
         discardCardFromHand(owner, cardId);
         return;
@@ -1451,7 +1553,6 @@ function handleGameCardClick(cardId, ownerId, zoneName) {
         return;
     }
 
-    // Hand actions
     if (zoneName === "hand" || zoneName === "discard") {
         if (card.type === "land") {
             playLandFromHand(owner, cardId);
@@ -1464,13 +1565,11 @@ function handleGameCardClick(cardId, ownerId, zoneName) {
         }
     }
 
-    // Lands on battlefield
     if (zoneName === "lands") {
         tapOrUntapLand(owner, cardId);
         return;
     }
 
-    // Creatures on battlefield
     if (zoneName === "creatures") {
         if (gameState.currentPhase === "combatAttack") {
             toggleAttacker(owner, cardId);
@@ -1478,13 +1577,11 @@ function handleGameCardClick(cardId, ownerId, zoneName) {
         }
 
         if (gameState.currentPhase === "combatBlock") {
-            // Defender clicking own creature to select/cancel blocker
             if (owner.id === getDefendingPlayer().id) {
                 toggleSelectedBlocker(owner, cardId);
                 return;
             }
 
-            // Defender selected blocker, then clicks attacker target
             if (owner.id === getCurrentPlayer().id) {
                 assignBlock(getDefendingPlayer(), cardId);
                 return;
@@ -1590,10 +1687,6 @@ player2NextPhaseBtn.addEventListener("click", function () {
     }
 });
 
-
-// ---------------------------------------------------------
-// EVENT DELEGATION - GAME ZONES
-// ---------------------------------------------------------
 document.addEventListener("click", function (event) {
     const clickedCard = event.target.closest(".game-card");
 
