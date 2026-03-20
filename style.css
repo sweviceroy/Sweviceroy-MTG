@@ -446,16 +446,16 @@ button:disabled {
     display: flex;
     justify-content: center;
     margin-bottom: 0.75rem;
-    flex: 1;
+    flex: auto;
     min-height: 0;
 }
 
 .preview-card-image {
     width: min(100%, 190px);            
     aspect-ratio: 5 / 7;
-    object-fit: cover;
+    object-fit: contain ;
     border: 2px solid #dfead7;
-    border-radius: 10px;
+    border-radius: 2px;
     background-color: rgba(2, 8, 23, 0.7);
 }
 
