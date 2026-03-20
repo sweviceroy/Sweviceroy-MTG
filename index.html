@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-                <!-- Lets roll! [/img/comment_letsroll.png] -->
 
     <main id="app">
 
@@ -220,11 +219,11 @@
                     </div>
                 </aside>
 
-                <!-- CENTER GAME BOARD -->
+                <!-- CENTER BOARD -->
                 <section class="game-board">
 
-                    <!-- PLAYER 2 HEADER / STATS -->
-                    <div class="player-header player2-header">
+                    <!-- PLAYER 2 INFO BAR -->
+                    <div class="player-info-row player2-info-row">
                         <div class="player-name-block">
                             <h3 id="player2-name-display">Player 2</h3>
                         </div>
@@ -252,7 +251,7 @@
                     </div>
 
                     <!-- PLAYER 2 HAND -->
-                    <div class="hand-section player2-hand-section">
+                    <div class="board-row hand-row">
                         <div class="zone-label-row">
                             <h4>Player 2 Hand</h4>
                             <h4>8th Card / Discard</h4>
@@ -260,59 +259,70 @@
 
                         <div class="hand-zone-row">
                             <div id="player2-hand-zone" class="hand-zone">
-                                <!-- player 2 hand cards go here -->
+                                <!-- player 2 hand cards -->
                             </div>
 
                             <div id="player2-discard-slot" class="discard-slot-zone">
-                                <!-- player 2 overflow/discard slot -->
+                                <!-- player 2 discard slot -->
                             </div>
                         </div>
                     </div>
 
-                    <!-- PLAYER 2 BATTLEFIELD -->
-                    <div class="battlefield-side battlefield-side-top">
-                        <div class="zone-block">
-                            <div class="zone-label-row">
-                                <h4>Player 2 Lands</h4>
-                            </div>
-                            <div id="player2-lands-zone" class="battlefield-zone lands-zone">
-                                <!-- player 2 lands -->
-                            </div>
+                    <!-- PLAYER 2 LANDS -->
+                    <div class="board-row zone-row lands-row">
+                        <div class="zone-label-single">
+                            <h4>Player 2 Lands</h4>
                         </div>
 
-                        <div class="zone-block">
-                            <div class="zone-label-row">
-                                <h4>Player 2 Creatures</h4>
-                            </div>
-                            <div id="player2-creatures-zone" class="battlefield-zone creatures-zone">
-                                <!-- player 2 creatures -->
-                            </div>
+                        <div id="player2-lands-zone" class="battlefield-zone lands-zone fixed-grid-zone">
+                            <!-- player 2 lands -->
                         </div>
                     </div>
 
-                    <!-- PLAYER 1 BATTLEFIELD -->
-                    <div class="battlefield-side battlefield-side-bottom">
-                        <div class="zone-block">
-                            <div class="zone-label-row">
-                                <h4>Player 1 Creatures</h4>
-                            </div>
-                            <div id="player1-creatures-zone" class="battlefield-zone creatures-zone">
-                                <!-- player 1 creatures -->
-                            </div>
+                    <!-- SPACER 1 -->
+                    <div class="board-spacer-row" aria-hidden="true"></div>
+
+                    <!-- PLAYER 2 CREATURES -->
+                    <div class="board-row zone-row creatures-row">
+                        <div class="zone-label-single">
+                            <h4>Player 2 Creatures</h4>
                         </div>
 
-                        <div class="zone-block">
-                            <div class="zone-label-row">
-                                <h4>Player 1 Lands</h4>
-                            </div>
-                            <div id="player1-lands-zone" class="battlefield-zone lands-zone">
-                                <!-- player 1 lands -->
-                            </div>
+                        <div id="player2-creatures-zone" class="battlefield-zone creatures-zone fixed-grid-zone">
+                            <!-- player 2 creatures -->
+                        </div>
+                    </div>
+
+                    <!-- SPACER 2 -->
+                    <div class="board-spacer-row" aria-hidden="true"></div>
+
+                    <!-- PLAYER 1 CREATURES -->
+                    <div class="board-row zone-row creatures-row">
+                        <div class="zone-label-single">
+                            <h4>Player 1 Creatures</h4>
+                        </div>
+
+                        <div id="player1-creatures-zone" class="battlefield-zone creatures-zone fixed-grid-zone">
+                            <!-- player 1 creatures -->
+                        </div>
+                    </div>
+
+                    <!-- SPACER 3 -->
+                    <div class="board-spacer-row" aria-hidden="true"></div>
+
+                    <!-- PLAYER 1 LANDS -->
+                    <div class="board-row zone-row lands-row">
+                        <div class="zone-label-single">
+                            <h4>Player 1 Lands</h4>
+                        </div>
+
+                        <div id="player1-lands-zone" class="battlefield-zone lands-zone fixed-grid-zone">
+                            <!-- player 1 lands -->
                         </div>
                     </div>
 
                     <!-- PLAYER 1 HAND -->
-                    <div class="hand-section player1-hand-section">
+                    <div class="board-row hand-row">
                         <div class="zone-label-row">
                             <h4>Player 1 Hand</h4>
                             <h4>8th Card / Discard</h4>
@@ -320,17 +330,17 @@
 
                         <div class="hand-zone-row">
                             <div id="player1-hand-zone" class="hand-zone">
-                                <!-- player 1 hand cards go here -->
+                                <!-- player 1 hand cards -->
                             </div>
 
                             <div id="player1-discard-slot" class="discard-slot-zone">
-                                <!-- player 1 overflow/discard slot -->
+                                <!-- player 1 discard slot -->
                             </div>
                         </div>
                     </div>
 
-                    <!-- PLAYER 1 HEADER / STATS -->
-                    <div class="player-header player1-header">
+                    <!-- PLAYER 1 INFO BAR -->
+                    <div class="player-info-row player1-info-row">
                         <div class="player-name-block">
                             <h3 id="player1-name-display">Player 1</h3>
                         </div>
@@ -389,7 +399,7 @@
         ========================================================== -->
         <section id="gameover-screen" class="screen hidden">
             <div class="screen-content">
-                <h2>Game Over Screen</h2>
+                <h2>Game Over</h2>
                 <p>Winner info will go here...</p>
             </div>
         </section>
