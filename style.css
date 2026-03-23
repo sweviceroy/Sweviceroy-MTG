@@ -336,7 +336,7 @@ button:disabled {
     width: 100%;
     height: calc(100vh - 0.8rem);
     display: grid;
-    grid-template-columns: 100px 1fr 400px; /* 130px 1fr 210px DEFAULT! */
+    grid-template-columns: 100px 1fr 300px; /* 130px 1fr 210px DEFAULT! */
     gap: 0.6rem;
 }
 

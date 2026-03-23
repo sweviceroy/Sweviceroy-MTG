@@ -636,6 +636,9 @@ function clearCombatSelections() {
     gameState.selectedBlockerId = null;
 }
 
+// No other land-tracking system is required for this simplified mono-green model.
+// These can stay as they are:
+
 function clearManaPools() {
     gameState.players[0].manaPool = 0;
     gameState.players[1].manaPool = 0;
@@ -1296,6 +1299,8 @@ function playLandFromHand(player, cardId) {
     renderGame();
 }
 
+// Replace your current tapOrUntapLand() with this version
+
 function tapOrUntapLand(player, cardId) {
     if (gameState.pendingDiscard) {
         return;
@@ -1316,9 +1321,18 @@ function tapOrUntapLand(player, cardId) {
         return;
     }
 
+    // If land is already tapped, only allow untap if there is floating mana left.
+    // 1 floating mana = 1 allowed untap.
     if (land.tapped) {
+        if (player.manaPool <= 0) {
+            gameState.message = `${land.name} cannot be untapped. Its mana has already been spent this turn.`;
+            setPreviewCard(land);
+            renderGame();
+            return;
+        }
+
         land.tapped = false;
-        player.manaPool = Math.max(0, player.manaPool - 1);
+        player.manaPool -= 1;
         gameState.message = `${player.name} untapped ${land.name}. Mana pool: ${player.manaPool}`;
     } else {
         land.tapped = true;
@@ -1329,6 +1343,11 @@ function tapOrUntapLand(player, cardId) {
     setPreviewCard(land);
     renderGame();
 }
+
+// Keep castCreatureFromHand() like this.
+// It works together with the untap rule above:
+// - spending mana lowers manaPool
+// - once manaPool hits 0, no more tapped lands can be manually untapped
 
 function castCreatureFromHand(player, cardId) {
     if (gameState.pendingDiscard) {
@@ -1368,7 +1387,7 @@ function castCreatureFromHand(player, cardId) {
     card.tapped = false;
     player.battlefieldCreatures.push(card);
 
-    gameState.message = `${player.name} cast ${card.name}.`;
+    gameState.message = `${player.name} cast ${card.name}. Mana pool: ${player.manaPool}`;
     setPreviewCard(card);
     renderGame();
 }
