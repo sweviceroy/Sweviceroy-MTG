@@ -1,0 +1,21 @@
+/* =========================================================
+   WELCOME SCREEN
+   ========================================================= */
+
+.game-title {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: #d9ffd0;
+}
+
+.game-subtitle {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    color: #eef7ea;
+}
+
+.welcome-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}

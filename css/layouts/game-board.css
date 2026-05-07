@@ -1,0 +1,16 @@
+/* =========================================================
+   GAME BOARD GRID
+   ========================================================= */
+
+.game-board {
+    display: grid;
+    grid-template-rows:
+        auto
+        auto
+        1fr
+        1fr
+        auto
+        auto;
+    gap: 0.45rem;
+    min-height: 0;
+}

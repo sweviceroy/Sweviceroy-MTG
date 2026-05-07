@@ -1,0 +1,10 @@
+/* =========================================================
+   GAME OVER SCREEN
+   ========================================================= */
+
+#gameover-screen .screen-content {
+    /* border: 2px dashed #dfead7; */
+    border: 2px solid transparent;
+    border-radius: 12px;
+    background-color: rgba(15, 23, 42, 0.72);
+}

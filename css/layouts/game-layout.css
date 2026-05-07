@@ -1,0 +1,28 @@
+/* =========================================================
+   MAIN GAME SCREEN - LAYOUT
+   ========================================================= */
+
+#game-screen {
+    align-items: stretch;
+    padding: 0.4rem;
+}
+
+.game-layout {
+    width: 100%;
+    height: calc(100vh - 0.8rem);
+    display: grid;
+    grid-template-columns: 100px 1fr 300px; /* 130px 1fr 210px DEFAULT! */
+    gap: 0.6rem;
+}
+
+/* =========================================================
+   SIDEBAR CONTAINERS
+   ========================================================= */
+
+.game-sidebar-left,
+.game-sidebar-right {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    min-height: 0;
+}

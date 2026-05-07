@@ -1,0 +1,36 @@
+/* =========================================================
+   PREVIEW PANEL
+   ========================================================= */
+
+.preview-panel {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.preview-card-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 0.75rem;
+    flex: auto;
+    min-height: 0;
+}
+
+.preview-card-image {
+    width: min(100%, 190px);
+    aspect-ratio: 5 / 7;
+    object-fit: contain;
+    /* border: 2px solid #dfead7; */
+    border: 2px solid transparent;
+    border-radius: 2px;
+    background-color: rgba(2, 8, 23, 0.7);
+}
+
+.preview-card-name {
+    color: #f1f5f9;
+    font-weight: bold;
+    text-align: center;
+}

@@ -1,0 +1,23 @@
+/* =========================================================
+   CARD VISUAL STATES
+   ========================================================= */
+
+.card-tapped {
+    transform: rotate(90deg);
+}
+
+.card-attacking {
+    transform: translateY(-10px);
+}
+
+.card-selected {
+    outline: 3px solid #facc15;
+}
+
+.card-blocking {
+    outline: 3px solid #60a5fa;
+}
+
+.card-damaged {
+    outline: 3px solid #ef4444;
+}

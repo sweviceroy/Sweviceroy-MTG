@@ -1,0 +1,118 @@
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1400px) {
+    .game-layout {
+        grid-template-columns: 120px 1fr 190px;
+    }
+
+    .hand-zone .game-card,
+    .discard-slot-zone .game-card {
+        width: 68px;
+        min-width: 68px;
+        max-width: 68px;
+        flex: 0 0 68px;
+    }
+
+    .lands-zone .game-card,
+    .creatures-zone .game-card {
+        width: 62px;
+        min-width: 62px;
+        max-width: 62px;
+        flex: 0 0 62px;
+    }
+}
+
+@media (max-width: 1200px) {
+    body {
+        overflow: auto;
+    }
+
+    .game-layout {
+        height: auto;
+        min-height: calc(100vh - 0.8rem);
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto;
+    }
+
+    .game-sidebar-left,
+    .game-sidebar-right {
+        min-height: auto;
+    }
+
+    .preview-panel {
+        min-height: 320px;
+    }
+}
+
+@media (max-width: 850px) {
+    .login-panels {
+        grid-template-columns: 1fr;
+    }
+
+    .player-side:first-child {
+        border-right: none;
+        /* border-bottom: 2px solid #dfead7; */
+        border-bottom: 2px solid transparent;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+    }
+
+    .player-side {
+        min-height: auto;
+    }
+
+    .loading-players {
+        grid-template-columns: 1fr;
+    }
+
+    .player-header {
+        grid-template-columns: 1fr;
+    }
+
+    .zone-label-row,
+    .hand-zone-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .screen {
+        padding: 1rem;
+    }
+
+    .screen-content {
+        padding: 1rem;
+    }
+
+    .game-title {
+        font-size: 2.2rem;
+    }
+
+    button {
+        width: 100%;
+    }
+
+    .welcome-buttons,
+    .tutorial-buttons,
+    .login-bottom-actions {
+        flex-direction: column;
+    }
+
+    .loading-card {
+        padding: 1.25rem;
+    }
+
+    .player-stats-block {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .next-phase-btn {
+        margin-left: 0;
+    }
+}

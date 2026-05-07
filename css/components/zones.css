@@ -1,0 +1,103 @@
+/* =========================================================
+   HAND SECTIONS
+   ========================================================= */
+
+.hand-section {
+    background-color: rgba(15, 23, 42, 0.72);
+    /* border: 2px solid #dfead7; */
+    border: 2px solid transparent;
+    border-radius: 12px;
+    padding: 0.45rem;
+}
+
+.zone-label-row {
+    display: grid;
+    grid-template-columns: 1fr 120px;
+    gap: 0.45rem;
+    margin-bottom: 0.3rem;
+    align-items: center;
+}
+
+.zone-label-row h4 {
+    color: #eef7ea;
+    font-size: 0.88rem;
+    text-align: center;
+}
+
+.hand-zone-row {
+    display: grid;
+    grid-template-columns: 1fr 120px;
+    gap: 0.45rem;
+    align-items: stretch;
+}
+
+.hand-zone,
+.discard-slot-zone {
+    min-height: 116px;
+    background-color: rgba(2, 8, 23, 0.68);
+    /* border: 2px dashed #bcd2b3; */
+    border: 2px solid transparent;
+    border-radius: 10px;
+    padding: 0.35rem 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    overflow: hidden;
+}
+
+.hand-zone {
+    justify-content: center;
+    flex-wrap: nowrap;
+}
+
+.discard-slot-zone {
+    justify-content: center;
+}
+
+/* =========================================================
+   BATTLEFIELD ZONES
+   ========================================================= */
+
+.battlefield-side {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 0.45rem;
+    min-height: 0;
+    align-items: stretch;
+}
+
+/* Player 2 has lands first in HTML, swap so creatures appear left */
+.battlefield-side-top .zone-block:first-child {
+    order: 2;
+}
+
+.zone-block {
+    background-color: rgba(15, 23, 42, 0.72);
+    /* border: 2px solid #dfead7; */
+    border: 2px solid transparent;
+    border-radius: 12px;
+    padding: 0.4rem;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.battlefield-zone {
+    flex: 1;
+    min-height: 0;
+    background-color: rgba(2, 8, 23, 0.68);
+    /* border: 2px dashed #bcd2b3; */
+    border: 2px solid transparent;
+    border-radius: 10px;
+    padding: 0.35rem 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    overflow: hidden;
+}
+
+.lands-zone,
+.creatures-zone {
+    justify-content: center;
+    flex-wrap: nowrap;
+}

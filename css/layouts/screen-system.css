@@ -1,0 +1,39 @@
+/* =========================================================
+   SCREEN SYSTEM
+   ========================================================= */
+
+.screen {
+    width: 100%;
+    min-height: 100vh;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+}
+
+.active-screen {
+    display: flex;
+}
+
+.hidden {
+    display: none;
+}
+
+/* =========================================================
+   GENERIC SCREEN CONTENT
+   ========================================================= */
+
+.screen-content {
+    width: 100%;
+    max-width: 1100px;
+    padding: 2rem;
+    text-align: center;
+}
+
+h2 {
+    margin-bottom: 1rem;
+}
+
+p {
+    color: #dbe7d2;
+}

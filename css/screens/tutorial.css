@@ -1,0 +1,41 @@
+/* =========================================================
+   TUTORIAL SCREEN
+   ========================================================= */
+
+.tutorial-content {
+    text-align: center;
+}
+
+.tutorial-title {
+    margin-bottom: 0.5rem;
+}
+
+.tutorial-counter {
+    margin-bottom: 1.5rem;
+    color: #eef7ea;
+}
+
+.tutorial-image-wrapper {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto 1.5rem auto;
+    /* border: 2px solid #dfead7; */
+    border: 2px solid transparent;
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: rgba(15, 23, 42, 0.7);
+}
+
+.tutorial-image {
+    display: block;
+    width: 100%;
+    max-height: 65vh;
+    object-fit: contain;
+}
+
+.tutorial-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}

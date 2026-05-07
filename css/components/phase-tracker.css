@@ -1,0 +1,29 @@
+/* =========================================================
+   PHASE TRACKER
+   ========================================================= */
+
+.phase-tracker-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+}
+
+.phase-tracker-item {
+    padding: 0.6rem 0.7rem;
+    border-radius: 8px;
+    background-color: rgba(2, 8, 23, 0.7);
+    /* border: 2px solid #dfead7; */
+    border: 2px solid transparent;
+    color: #eef7ea;
+    font-weight: bold;
+    text-align: left;
+    font-size: 0.9rem;
+}
+
+.active-phase-item {
+    background-color: #2563eb;
+    /* border-color: #93c5fd; */
+    border-color: transparent;
+    color: #ffffff;
+}
