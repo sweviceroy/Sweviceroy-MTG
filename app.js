@@ -5,6 +5,7 @@
 // =========================================================
 
 
+//#region APP STATE
 // ---------------------------------------------------------
 // APP STATE
 // ---------------------------------------------------------
@@ -12,6 +13,10 @@ const appState = {
     currentScreen: "welcome"
 };
 
+
+//#endregion
+
+//#region TUTORIAL STATE
 
 // ---------------------------------------------------------
 // TUTORIAL STATE
@@ -28,6 +33,10 @@ const tutorialState = {
     ]
 };
 
+
+//#endregion
+
+//#region BETTING / LOGIN STATE
 
 // ---------------------------------------------------------
 // BETTING / LOGIN STATE
@@ -60,6 +69,10 @@ const STORAGE_KEYS = {
     player2Balance: "sweviceroy_player2_balance"
 };
 
+
+//#endregion
+
+//#region GAME CONSTANTS
 
 // ---------------------------------------------------------
 // GAME CONSTANTS
@@ -142,6 +155,10 @@ const CARD_LIBRARY = {
 };
 
 
+//#endregion
+
+//#region MAIN GAME STATE
+
 // ---------------------------------------------------------
 // MAIN GAME STATE
 // ---------------------------------------------------------
@@ -187,6 +204,10 @@ const gameState = {
 };
 
 
+//#endregion
+
+//#region ID FACTORY
+
 // ---------------------------------------------------------
 // ID FACTORY
 // ---------------------------------------------------------
@@ -198,6 +219,10 @@ function createUniqueId(prefix) {
     return id;
 }
 
+
+//#endregion
+
+//#region DOM REFERENCES - SCREENS
 
 // ---------------------------------------------------------
 // DOM REFERENCES - SCREENS
@@ -212,11 +237,19 @@ const screens = {
 };
 
 
+//#endregion
+
+//#region DOM REFERENCES - WELCOME
+
 // ---------------------------------------------------------
 // DOM REFERENCES - WELCOME
 // ---------------------------------------------------------
 const startBtn = document.getElementById("start-btn");
 
+
+//#endregion
+
+//#region DOM REFERENCES - TUTORIAL
 
 // ---------------------------------------------------------
 // DOM REFERENCES - TUTORIAL
@@ -227,6 +260,10 @@ const tutorialPrevBtn = document.getElementById("tutorial-prev-btn");
 const tutorialNextBtn = document.getElementById("tutorial-next-btn");
 const tutorialLoginBtn = document.getElementById("tutorial-login-btn");
 
+
+//#endregion
+
+//#region DOM REFERENCES - LOGIN / BETTING
 
 // ---------------------------------------------------------
 // DOM REFERENCES - LOGIN / BETTING
@@ -247,6 +284,10 @@ const loginBackBtn = document.getElementById("login-back-btn");
 const startMatchBtn = document.getElementById("start-match-btn");
 
 
+//#endregion
+
+//#region DOM REFERENCES - LOADING
+
 // ---------------------------------------------------------
 // DOM REFERENCES - LOADING
 // ---------------------------------------------------------
@@ -256,6 +297,10 @@ const loadingPlayer1Bet = document.getElementById("loading-player1-bet");
 const loadingPlayer2Bet = document.getElementById("loading-player2-bet");
 const loadingStepText = document.getElementById("loading-step-text");
 
+
+//#endregion
+
+//#region DOM REFERENCES - GAME SCREEN
 
 // ---------------------------------------------------------
 // DOM REFERENCES - GAME SCREEN
@@ -303,6 +348,10 @@ const previewCardName = document.getElementById("preview-card-name");
 const gameOverScreenContent = document.querySelector("#gameover-screen .screen-content");
 
 
+//#endregion
+
+//#region GENERIC APP HELPERS
+
 // =========================================================
 // GENERIC APP HELPERS
 // =========================================================
@@ -346,6 +395,10 @@ function parsePositiveInteger(value) {
 }
 
 
+//#endregion
+
+//#region TUTORIAL
+
 // =========================================================
 // TUTORIAL
 // =========================================================
@@ -377,6 +430,10 @@ function goToNextTutorialImage() {
     }
 }
 
+
+//#endregion
+
+//#region LOGIN / BETTING
 
 // =========================================================
 // LOGIN / BETTING
@@ -478,6 +535,10 @@ function validatePlayerBets() {
 }
 
 
+//#endregion
+
+//#region LOADING
+
 // =========================================================
 // LOADING
 // =========================================================
@@ -522,6 +583,10 @@ function openLoadingScreen() {
     loadingState.timeoutIds.push(finalTimeoutId);
 }
 
+
+//#endregion
+
+//#region GAME HELPERS
 
 // =========================================================
 // GAME HELPERS
@@ -771,6 +836,10 @@ function gameOver(loserPlayerId, reason) {
 }
 
 
+//#endregion
+
+//#region PHASE / TURN ENGINE
+
 // =========================================================
 // PHASE / TURN ENGINE
 // =========================================================
@@ -1005,6 +1074,10 @@ function resolveCombatDamage() {
 }
 
 
+//#endregion
+
+//#region GAME INITIALIZATION
+
 // =========================================================
 // GAME INITIALIZATION
 // =========================================================
@@ -1058,6 +1131,10 @@ function initializeGame() {
     }
 }
 
+
+//#endregion
+
+//#region RENDER HELPERS
 
 // =========================================================
 // RENDER HELPERS
@@ -1256,6 +1333,10 @@ function renderGame() {
     renderBoard();
 }
 
+
+//#endregion
+
+//#region GAME ACTIONS
 
 // =========================================================
 // GAME ACTIONS
@@ -1541,6 +1622,10 @@ function assignBlock(defender, attackerCardId) {
 }
 
 
+//#endregion
+
+//#region GAME CLICK ROUTER
+
 // =========================================================
 // GAME CLICK ROUTER
 // =========================================================
@@ -1612,6 +1697,10 @@ function handleGameCardClick(cardId, ownerId, zoneName) {
 }
 
 
+//#endregion
+
+//#region EVENT LISTENERS - WELCOME / TUTORIAL
+
 // =========================================================
 // EVENT LISTENERS - WELCOME / TUTORIAL
 // =========================================================
@@ -1631,6 +1720,10 @@ tutorialLoginBtn.addEventListener("click", function () {
     openLoginScreen();
 });
 
+
+//#endregion
+
+//#region EVENT LISTENERS - LOGIN INPUT SANITIZING
 
 // =========================================================
 // EVENT LISTENERS - LOGIN INPUT SANITIZING
@@ -1691,6 +1784,10 @@ startMatchBtn.addEventListener("click", function () {
 });
 
 
+//#endregion
+
+//#region EVENT LISTENERS - GAME BUTTONS
+
 // =========================================================
 // EVENT LISTENERS - GAME BUTTONS
 // =========================================================
@@ -1721,6 +1818,10 @@ document.addEventListener("click", function (event) {
 });
 
 
+//#endregion
+
+//#region INIT
+
 // =========================================================
 // INIT
 // =========================================================
@@ -1728,3 +1829,5 @@ loadBalancesFromStorage();
 updateBalanceDisplay();
 updateTutorialScreen();
 showScreen("welcome");
+
+//#endregion
