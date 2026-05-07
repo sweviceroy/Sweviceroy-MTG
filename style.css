@@ -10,7 +10,7 @@
 
 body {
     font-family: Arial, Helvetica, sans-serif;
-    background-color: #4a7330; /* green battlefield background */
+    background-color: #45804f; /* green battlefield background, Klicka i rektangeln här så kan du byta färg! ProTIP!*/
     color: #f1f5f9;
     min-height: 100vh;
     overflow: hidden;
@@ -503,7 +503,7 @@ button:disabled {
 }
 
 .preview-card-image {
-    width: min(100%, 190px);            
+    width: min(100%, 190px);
     aspect-ratio: 5 / 7;
     object-fit: contain ;
     /* border: 2px solid #dfead7; */
@@ -899,7 +899,7 @@ button:disabled {
     .player-side:first-child {
         border-right: none;
         /* border-bottom: 2px solid #dfead7; */
-    border-bottom: 2px solid transparent;
+        border-bottom: 2px solid transparent;
     }
 
     .form-row {

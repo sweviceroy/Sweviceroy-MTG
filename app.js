@@ -100,7 +100,7 @@ const CARD_LIBRARY = {
 
     creature1: {
         key: "creature1",
-        name: "Wolf Cub",
+        name: "Pepe the Poor",
         type: "creature",
         image: "img/creature-1.png",
         power: 1,
@@ -109,25 +109,25 @@ const CARD_LIBRARY = {
     },
     creature2: {
         key: "creature2",
-        name: "Wild Boar",
+        name: "Wojak the Weak",
         type: "creature",
         image: "img/creature-2.png",
-        power: 2,
+        power: 1,
         toughness: 2,
-        cost: 2
+        cost: 1
     },
     creature3: {
         key: "creature3",
-        name: "Oak Guard",
+        name: "Pepe the Scrappy",
         type: "creature",
         image: "img/creature-3.png",
         power: 2,
-        toughness: 3,
+        toughness: 2,
         cost: 3
     },
     creature4: {
         key: "creature4",
-        name: "Forest Stalker",
+        name: "Wojak the Worker",
         type: "creature",
         image: "img/creature-4.png",
         power: 3,
@@ -136,20 +136,20 @@ const CARD_LIBRARY = {
     },
     creature5: {
         key: "creature5",
-        name: "Moss Giant",
+        name: "Pepe, Forest Knight",
         type: "creature",
         image: "img/creature-5.png",
-        power: 4,
+        power: 3,
         toughness: 4,
-        cost: 4
+        cost: 5
     },
     creature6: {
         key: "creature6",
-        name: "Ancient Treant",
+        name: "Wojakbeast",
         type: "creature",
         image: "img/creature-6.png",
-        power: 5,
-        toughness: 5,
+        power: 4,
+        toughness: 4,
         cost: 5
     }
 };
