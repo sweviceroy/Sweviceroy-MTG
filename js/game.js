@@ -1,594 +1,4 @@
 // =========================================================
-// SweViceroy MTG
-// Single-file MVP app logic
-// Screens + tutorial + betting + loading + main game
-// =========================================================
-
-
-//#region APP STATE
-// ---------------------------------------------------------
-// APP STATE
-// ---------------------------------------------------------
-const appState = {
-    currentScreen: "welcome"
-};
-
-
-//#endregion
-
-//#region TUTORIAL STATE
-
-// ---------------------------------------------------------
-// TUTORIAL STATE
-// ---------------------------------------------------------
-const tutorialState = {
-    currentIndex: 0,
-    images: [
-        "img/tutorial-1.png",
-        "img/tutorial-2.png",
-        "img/tutorial-3.png",
-        "img/tutorial-4.png",
-        "img/tutorial-5.png",
-        "img/tutorial-6.png"
-    ]
-};
-
-
-//#endregion
-
-//#region BETTING / LOGIN STATE
-
-// ---------------------------------------------------------
-// BETTING / LOGIN STATE
-// ---------------------------------------------------------
-const bettingState = {
-    player1Balance: 0,
-    player2Balance: 0,
-    player1Bet: 0,
-    player2Bet: 0
-};
-
-const playerSetupState = {
-    player1Name: "Player 1",
-    player2Name: "Player 2"
-};
-
-const loadingState = {
-    stepIndex: 0,
-    steps: [
-        "Shuffling decks...",
-        "Drawing starting hands...",
-        "Preparing battlefield...",
-        "Rolling for first turn..."
-    ],
-    timeoutIds: []
-};
-
-const STORAGE_KEYS = {
-    player1Balance: "sweviceroy_player1_balance",
-    player2Balance: "sweviceroy_player2_balance"
-};
-
-
-//#endregion
-
-//#region GAME CONSTANTS
-
-// ---------------------------------------------------------
-// GAME CONSTANTS
-// ---------------------------------------------------------
-const PHASES = [
-    "draw",
-    "untap",
-    "main1",
-    "combatAttack",
-    "combatBlock",
-    "combatDamage",
-    "main2",
-    "end"
-];
-
-const CARD_BACK_IMAGE = "img/card-back.png";
-
-const CARD_LIBRARY = {
-    forest: {
-        key: "forest",
-        name: "Forest",
-        type: "land",
-        image: "img/forest.png"
-    },
-
-    creature1: {
-        key: "creature1",
-        name: "Pepe the Poor",
-        type: "creature",
-        image: "img/creature-1.png",
-        power: 1,
-        toughness: 1,
-        cost: 1
-    },
-    creature2: {
-        key: "creature2",
-        name: "Wojak the Weak",
-        type: "creature",
-        image: "img/creature-2.png",
-        power: 1,
-        toughness: 2,
-        cost: 1
-    },
-    creature3: {
-        key: "creature3",
-        name: "Pepe the Scrappy",
-        type: "creature",
-        image: "img/creature-3.png",
-        power: 2,
-        toughness: 2,
-        cost: 3
-    },
-    creature4: {
-        key: "creature4",
-        name: "Wojak the Worker",
-        type: "creature",
-        image: "img/creature-4.png",
-        power: 3,
-        toughness: 2,
-        cost: 3
-    },
-    creature5: {
-        key: "creature5",
-        name: "Pepe, Forest Knight",
-        type: "creature",
-        image: "img/creature-5.png",
-        power: 3,
-        toughness: 4,
-        cost: 5
-    },
-    creature6: {
-        key: "creature6",
-        name: "Wojakbeast",
-        type: "creature",
-        image: "img/creature-6.png",
-        power: 4,
-        toughness: 4,
-        cost: 5
-    }
-};
-
-
-//#endregion
-
-//#region MAIN GAME STATE
-
-// ---------------------------------------------------------
-// MAIN GAME STATE
-// ---------------------------------------------------------
-const gameState = {
-    started: false,
-    turnNumber: 1,
-    currentPlayerIndex: 0, // 0 = player1, 1 = player2
-    currentPhase: "draw",
-    landPlayedThisTurn: false,
-    selectedPreviewCardId: null,
-    selectedBlockerId: null,
-    pendingDiscard: false,
-    combatDamageLocked: false,
-    combatDamageTimeoutId: null,
-    winnerPlayerId: null,
-    loserPlayerId: null,
-    endReason: "",
-    betResolved: false,
-    message: "",
-
-    players: [
-        {
-            id: 1,
-            name: "Player 1",
-            life: 10,
-            manaPool: 0,
-            library: [],
-            hand: [],
-            battlefieldLands: [],
-            battlefieldCreatures: []
-        },
-        {
-            id: 2,
-            name: "Player 2",
-            life: 10,
-            manaPool: 0,
-            library: [],
-            hand: [],
-            battlefieldLands: [],
-            battlefieldCreatures: []
-        }
-    ]
-};
-
-
-//#endregion
-
-//#region ID FACTORY
-
-// ---------------------------------------------------------
-// ID FACTORY
-// ---------------------------------------------------------
-let uniqueIdCounter = 1;
-
-function createUniqueId(prefix) {
-    const id = `${prefix}-${uniqueIdCounter}`;
-    uniqueIdCounter++;
-    return id;
-}
-
-
-//#endregion
-
-//#region DOM REFERENCES - SCREENS
-
-// ---------------------------------------------------------
-// DOM REFERENCES - SCREENS
-// ---------------------------------------------------------
-const screens = {
-    welcome: document.getElementById("welcome-screen"),
-    tutorial: document.getElementById("tutorial-screen"),
-    login: document.getElementById("login-screen"),
-    loading: document.getElementById("loading-screen"),
-    game: document.getElementById("game-screen"),
-    gameOver: document.getElementById("gameover-screen")
-};
-
-
-//#endregion
-
-//#region DOM REFERENCES - WELCOME
-
-// ---------------------------------------------------------
-// DOM REFERENCES - WELCOME
-// ---------------------------------------------------------
-const startBtn = document.getElementById("start-btn");
-
-
-//#endregion
-
-//#region DOM REFERENCES - TUTORIAL
-
-// ---------------------------------------------------------
-// DOM REFERENCES - TUTORIAL
-// ---------------------------------------------------------
-const tutorialImage = document.getElementById("tutorial-image");
-const tutorialCounter = document.getElementById("tutorial-counter");
-const tutorialPrevBtn = document.getElementById("tutorial-prev-btn");
-const tutorialNextBtn = document.getElementById("tutorial-next-btn");
-const tutorialLoginBtn = document.getElementById("tutorial-login-btn");
-
-
-//#endregion
-
-//#region DOM REFERENCES - LOGIN / BETTING
-
-// ---------------------------------------------------------
-// DOM REFERENCES - LOGIN / BETTING
-// ---------------------------------------------------------
-const player1NameInput = document.getElementById("player1-name");
-const player2NameInput = document.getElementById("player2-name");
-
-const player1BalanceText = document.getElementById("player1-balance");
-const player2BalanceText = document.getElementById("player2-balance");
-
-const player1AddMoneyInput = document.getElementById("player1-add-money");
-const player2AddMoneyInput = document.getElementById("player2-add-money");
-
-const player1BetAmountInput = document.getElementById("player1-bet-amount");
-const player2BetAmountInput = document.getElementById("player2-bet-amount");
-
-const loginBackBtn = document.getElementById("login-back-btn");
-const startMatchBtn = document.getElementById("start-match-btn");
-
-
-//#endregion
-
-//#region DOM REFERENCES - LOADING
-
-// ---------------------------------------------------------
-// DOM REFERENCES - LOADING
-// ---------------------------------------------------------
-const loadingPlayer1Name = document.getElementById("loading-player1-name");
-const loadingPlayer2Name = document.getElementById("loading-player2-name");
-const loadingPlayer1Bet = document.getElementById("loading-player1-bet");
-const loadingPlayer2Bet = document.getElementById("loading-player2-bet");
-const loadingStepText = document.getElementById("loading-step-text");
-
-
-//#endregion
-
-//#region DOM REFERENCES - GAME SCREEN
-
-// ---------------------------------------------------------
-// DOM REFERENCES - GAME SCREEN
-// ---------------------------------------------------------
-const turnNumberDisplay = document.getElementById("turn-number-display");
-const currentPlayerDisplay = document.getElementById("current-player-display");
-const instructionText = document.getElementById("instruction-text");
-
-const phaseDrawItem = document.getElementById("phase-draw-item");
-const phaseUntapItem = document.getElementById("phase-untap-item");
-const phaseMain1Item = document.getElementById("phase-main1-item");
-const phaseCombatItem = document.getElementById("phase-combat-item");
-const phaseMain2Item = document.getElementById("phase-main2-item");
-const phaseEndItem = document.getElementById("phase-end-item");
-
-const player1NameDisplay = document.getElementById("player1-name-display");
-const player2NameDisplay = document.getElementById("player2-name-display");
-
-const player1DeckCount = document.getElementById("player1-deck-count");
-const player2DeckCount = document.getElementById("player2-deck-count");
-
-const player1LifeTotal = document.getElementById("player1-life-total");
-const player2LifeTotal = document.getElementById("player2-life-total");
-
-const player1ManaPool = document.getElementById("player1-mana-pool");
-const player2ManaPool = document.getElementById("player2-mana-pool");
-
-const player1NextPhaseBtn = document.getElementById("player1-next-phase-btn");
-const player2NextPhaseBtn = document.getElementById("player2-next-phase-btn");
-
-const player1HandZone = document.getElementById("player1-hand-zone");
-const player2HandZone = document.getElementById("player2-hand-zone");
-const player1DiscardSlot = document.getElementById("player1-discard-slot");
-const player2DiscardSlot = document.getElementById("player2-discard-slot");
-
-const player1LandsZone = document.getElementById("player1-lands-zone");
-const player2LandsZone = document.getElementById("player2-lands-zone");
-
-const player1CreaturesZone = document.getElementById("player1-creatures-zone");
-const player2CreaturesZone = document.getElementById("player2-creatures-zone");
-
-const previewCardImage = document.getElementById("preview-card-image");
-const previewCardName = document.getElementById("preview-card-name");
-
-const gameOverScreenContent = document.querySelector("#gameover-screen .screen-content");
-
-
-//#endregion
-
-//#region GENERIC APP HELPERS
-
-// =========================================================
-// GENERIC APP HELPERS
-// =========================================================
-function showScreen(screenName) {
-    if (!screens[screenName]) {
-        console.warn(`Screen "${screenName}" does not exist.`);
-        return;
-    }
-
-    for (const key in screens) {
-        screens[key].classList.remove("active-screen");
-        screens[key].classList.add("hidden");
-    }
-
-    screens[screenName].classList.remove("hidden");
-    screens[screenName].classList.add("active-screen");
-
-    appState.currentScreen = screenName;
-}
-
-function sanitizeNumberInput(inputElement) {
-    inputElement.value = inputElement.value.replace(/\D/g, "");
-}
-
-function parsePositiveInteger(value) {
-    if (value.trim() === "") {
-        return null;
-    }
-
-    if (!/^\d+$/.test(value.trim())) {
-        return null;
-    }
-
-    const parsedValue = parseInt(value, 10);
-
-    if (parsedValue <= 0) {
-        return null;
-    }
-
-    return parsedValue;
-}
-
-
-//#endregion
-
-//#region TUTORIAL
-
-// =========================================================
-// TUTORIAL
-// =========================================================
-function updateTutorialScreen() {
-    tutorialImage.src = tutorialState.images[tutorialState.currentIndex];
-    tutorialCounter.textContent = `Step ${tutorialState.currentIndex + 1} / ${tutorialState.images.length}`;
-
-    tutorialPrevBtn.disabled = tutorialState.currentIndex === 0;
-    tutorialNextBtn.disabled = tutorialState.currentIndex === tutorialState.images.length - 1;
-}
-
-function openTutorialScreen() {
-    tutorialState.currentIndex = 0;
-    updateTutorialScreen();
-    showScreen("tutorial");
-}
-
-function goToPreviousTutorialImage() {
-    if (tutorialState.currentIndex > 0) {
-        tutorialState.currentIndex--;
-        updateTutorialScreen();
-    }
-}
-
-function goToNextTutorialImage() {
-    if (tutorialState.currentIndex < tutorialState.images.length - 1) {
-        tutorialState.currentIndex++;
-        updateTutorialScreen();
-    }
-}
-
-
-//#endregion
-
-//#region LOGIN / BETTING
-
-// =========================================================
-// LOGIN / BETTING
-// =========================================================
-function loadBalancesFromStorage() {
-    const savedPlayer1Balance = localStorage.getItem(STORAGE_KEYS.player1Balance);
-    const savedPlayer2Balance = localStorage.getItem(STORAGE_KEYS.player2Balance);
-
-    bettingState.player1Balance = savedPlayer1Balance ? parseInt(savedPlayer1Balance, 10) : 0;
-    bettingState.player2Balance = savedPlayer2Balance ? parseInt(savedPlayer2Balance, 10) : 0;
-}
-
-function saveBalancesToStorage() {
-    localStorage.setItem(STORAGE_KEYS.player1Balance, bettingState.player1Balance.toString());
-    localStorage.setItem(STORAGE_KEYS.player2Balance, bettingState.player2Balance.toString());
-}
-
-function updateBalanceDisplay() {
-    player1BalanceText.textContent = bettingState.player1Balance;
-    player2BalanceText.textContent = bettingState.player2Balance;
-}
-
-function addMoneyToPlayer(playerNumber) {
-    if (playerNumber === 1) {
-        const amountToAdd = parsePositiveInteger(player1AddMoneyInput.value);
-
-        if (amountToAdd === null) {
-            alert("Player 1 add cash must be a positive whole number.");
-            return false;
-        }
-
-        bettingState.player1Balance += amountToAdd;
-        player1AddMoneyInput.value = "";
-    } else {
-        const amountToAdd = parsePositiveInteger(player2AddMoneyInput.value);
-
-        if (amountToAdd === null) {
-            alert("Player 2 add cash must be a positive whole number.");
-            return false;
-        }
-
-        bettingState.player2Balance += amountToAdd;
-        player2AddMoneyInput.value = "";
-    }
-
-    saveBalancesToStorage();
-    updateBalanceDisplay();
-    return true;
-}
-
-function openLoginScreen() {
-    loadBalancesFromStorage();
-    updateBalanceDisplay();
-    showScreen("login");
-}
-
-function validatePlayerNames() {
-    const player1Name = player1NameInput.value.trim();
-    const player2Name = player2NameInput.value.trim();
-
-    if (player1Name === "" || player2Name === "") {
-        alert("Both players must enter a name.");
-        return false;
-    }
-
-    playerSetupState.player1Name = player1Name;
-    playerSetupState.player2Name = player2Name;
-    return true;
-}
-
-function validatePlayerBets() {
-    const parsedPlayer1Bet = parsePositiveInteger(player1BetAmountInput.value);
-    const parsedPlayer2Bet = parsePositiveInteger(player2BetAmountInput.value);
-
-    if (parsedPlayer1Bet === null) {
-        alert("Player 1 bet must be a positive whole number.");
-        return false;
-    }
-
-    if (parsedPlayer2Bet === null) {
-        alert("Player 2 bet must be a positive whole number.");
-        return false;
-    }
-
-    if (parsedPlayer1Bet > bettingState.player1Balance) {
-        alert("Player 1 bet cannot be higher than Player 1 balance.");
-        return false;
-    }
-
-    if (parsedPlayer2Bet > bettingState.player2Balance) {
-        alert("Player 2 bet cannot be higher than Player 2 balance.");
-        return false;
-    }
-
-    bettingState.player1Bet = parsedPlayer1Bet;
-    bettingState.player2Bet = parsedPlayer2Bet;
-
-    return true;
-}
-
-
-//#endregion
-
-//#region LOADING
-
-// =========================================================
-// LOADING
-// =========================================================
-function clearLoadingTimeouts() {
-    for (let i = 0; i < loadingState.timeoutIds.length; i++) {
-        clearTimeout(loadingState.timeoutIds[i]);
-    }
-
-    loadingState.timeoutIds = [];
-}
-
-function updateLoadingScreenInfo() {
-    loadingPlayer1Name.textContent = playerSetupState.player1Name;
-    loadingPlayer2Name.textContent = playerSetupState.player2Name;
-    loadingPlayer1Bet.textContent = bettingState.player1Bet;
-    loadingPlayer2Bet.textContent = bettingState.player2Bet;
-    loadingStepText.textContent = loadingState.steps[loadingState.stepIndex];
-}
-
-function openLoadingScreen() {
-    clearLoadingTimeouts();
-
-    loadingState.stepIndex = 0;
-    updateLoadingScreenInfo();
-    showScreen("loading");
-
-    for (let i = 1; i < loadingState.steps.length; i++) {
-        const timeoutId = setTimeout(function () {
-            loadingState.stepIndex = i;
-            loadingStepText.textContent = loadingState.steps[i];
-        }, i * 700);
-
-        loadingState.timeoutIds.push(timeoutId);
-    }
-
-    const finalTimeoutId = setTimeout(function () {
-        initializeGame();
-        showScreen("game");
-        renderGame();
-    }, loadingState.steps.length * 700);
-
-    loadingState.timeoutIds.push(finalTimeoutId);
-}
-
-
-//#endregion
-
-//#region GAME HELPERS
-
-// =========================================================
 // GAME HELPERS
 // =========================================================
 function getPlayerById(playerId) {
@@ -701,9 +111,6 @@ function clearCombatSelections() {
     gameState.selectedBlockerId = null;
 }
 
-// No other land-tracking system is required for this simplified mono-green model.
-// These can stay as they are:
-
 function clearManaPools() {
     gameState.players[0].manaPool = 0;
     gameState.players[1].manaPool = 0;
@@ -799,7 +206,6 @@ function applyBetResults(winnerPlayerId, loserPlayerId) {
         bettingState.player1Balance -= loserBetAmount;
     }
 
-    // Safety så ingen balance går under 0 pga framtida buggar
     bettingState.player1Balance = Math.max(0, bettingState.player1Balance);
     bettingState.player2Balance = Math.max(0, bettingState.player2Balance);
 
@@ -834,11 +240,6 @@ function gameOver(loserPlayerId, reason) {
     renderGameOverScreen();
     showScreen("gameOver");
 }
-
-
-//#endregion
-
-//#region PHASE / TURN ENGINE
 
 // =========================================================
 // PHASE / TURN ENGINE
@@ -1070,13 +471,8 @@ function resolveCombatDamage() {
         resetDamageMarks();
         gameState.message += " Combat damage finished. Attacker may proceed to Main 2.";
         renderGame();
-    }, 100); // Kort timeout för att ge spelaren chans att se damage-markeringarna innan de försvinner (antal millisekunder kan justeras)
+    }, 100);
 }
-
-
-//#endregion
-
-//#region GAME INITIALIZATION
 
 // =========================================================
 // GAME INITIALIZATION
@@ -1099,7 +495,7 @@ function initializeGame() {
     gameState.loserPlayerId = null;
     gameState.endReason = "";
     gameState.betResolved = false;
-    gameState.message = "Welcome to the game! Let the battle begin!"; 
+    gameState.message = "Welcome to the game! Let the battle begin!";
 
     gameState.players[0] = {
         id: 1,
@@ -1130,11 +526,6 @@ function initializeGame() {
         enterPhase("draw");
     }
 }
-
-
-//#endregion
-
-//#region RENDER HELPERS
 
 // =========================================================
 // RENDER HELPERS
@@ -1333,11 +724,6 @@ function renderGame() {
     renderBoard();
 }
 
-
-//#endregion
-
-//#region GAME ACTIONS
-
 // =========================================================
 // GAME ACTIONS
 // =========================================================
@@ -1380,8 +766,6 @@ function playLandFromHand(player, cardId) {
     renderGame();
 }
 
-// Replace your current tapOrUntapLand() with this version
-
 function tapOrUntapLand(player, cardId) {
     if (gameState.pendingDiscard) {
         return;
@@ -1402,8 +786,6 @@ function tapOrUntapLand(player, cardId) {
         return;
     }
 
-    // If land is already tapped, only allow untap if there is floating mana left.
-    // 1 floating mana = 1 allowed untap.
     if (land.tapped) {
         if (player.manaPool <= 0) {
             gameState.message = `${land.name} cannot be untapped. Its mana has already been spent this turn.`;
@@ -1424,11 +806,6 @@ function tapOrUntapLand(player, cardId) {
     setPreviewCard(land);
     renderGame();
 }
-
-// Keep castCreatureFromHand() like this.
-// It works together with the untap rule above:
-// - spending mana lowers manaPool
-// - once manaPool hits 0, no more tapped lands can be manually untapped
 
 function castCreatureFromHand(player, cardId) {
     if (gameState.pendingDiscard) {
@@ -1621,11 +998,6 @@ function assignBlock(defender, attackerCardId) {
     renderGame();
 }
 
-
-//#endregion
-
-//#region GAME CLICK ROUTER
-
 // =========================================================
 // GAME CLICK ROUTER
 // =========================================================
@@ -1695,139 +1067,3 @@ function handleGameCardClick(cardId, ownerId, zoneName) {
 
     renderGame();
 }
-
-
-//#endregion
-
-//#region EVENT LISTENERS - WELCOME / TUTORIAL
-
-// =========================================================
-// EVENT LISTENERS - WELCOME / TUTORIAL
-// =========================================================
-startBtn.addEventListener("click", function () {
-    openTutorialScreen();
-});
-
-tutorialPrevBtn.addEventListener("click", function () {
-    goToPreviousTutorialImage();
-});
-
-tutorialNextBtn.addEventListener("click", function () {
-    goToNextTutorialImage();
-});
-
-tutorialLoginBtn.addEventListener("click", function () {
-    openLoginScreen();
-});
-
-
-//#endregion
-
-//#region EVENT LISTENERS - LOGIN INPUT SANITIZING
-
-// =========================================================
-// EVENT LISTENERS - LOGIN INPUT SANITIZING
-// =========================================================
-player1AddMoneyInput.addEventListener("input", function () {
-    sanitizeNumberInput(player1AddMoneyInput);
-});
-
-player2AddMoneyInput.addEventListener("input", function () {
-    sanitizeNumberInput(player2AddMoneyInput);
-});
-
-player1BetAmountInput.addEventListener("input", function () {
-    sanitizeNumberInput(player1BetAmountInput);
-});
-
-player2BetAmountInput.addEventListener("input", function () {
-    sanitizeNumberInput(player2BetAmountInput);
-});
-
-player1AddMoneyInput.addEventListener("change", function () {
-    if (player1AddMoneyInput.value.trim() !== "") {
-        addMoneyToPlayer(1);
-    }
-});
-
-player2AddMoneyInput.addEventListener("change", function () {
-    if (player2AddMoneyInput.value.trim() !== "") {
-        addMoneyToPlayer(2);
-    }
-});
-
-player1AddMoneyInput.addEventListener("keydown", function (event) {
-    if (event.key === "Enter") {
-        addMoneyToPlayer(1);
-    }
-});
-
-player2AddMoneyInput.addEventListener("keydown", function (event) {
-    if (event.key === "Enter") {
-        addMoneyToPlayer(2);
-    }
-});
-
-loginBackBtn.addEventListener("click", function () {
-    openTutorialScreen();
-});
-
-startMatchBtn.addEventListener("click", function () {
-    const namesAreValid = validatePlayerNames();
-    const betsAreValid = validatePlayerBets();
-
-    if (!namesAreValid || !betsAreValid) {
-        return;
-    }
-
-    openLoadingScreen();
-});
-
-
-//#endregion
-
-//#region EVENT LISTENERS - GAME BUTTONS
-
-// =========================================================
-// EVENT LISTENERS - GAME BUTTONS
-// =========================================================
-player1NextPhaseBtn.addEventListener("click", function () {
-    if (!player1NextPhaseBtn.disabled) {
-        tryAdvancePhase();
-    }
-});
-
-player2NextPhaseBtn.addEventListener("click", function () {
-    if (!player2NextPhaseBtn.disabled) {
-        tryAdvancePhase();
-    }
-});
-
-document.addEventListener("click", function (event) {
-    const clickedCard = event.target.closest(".game-card");
-
-    if (!clickedCard) {
-        return;
-    }
-
-    handleGameCardClick(
-        clickedCard.dataset.cardId,
-        clickedCard.dataset.ownerId,
-        clickedCard.dataset.zoneName
-    );
-});
-
-
-//#endregion
-
-//#region INIT
-
-// =========================================================
-// INIT
-// =========================================================
-loadBalancesFromStorage();
-updateBalanceDisplay();
-updateTutorialScreen();
-showScreen("welcome");
-
-//#endregion
